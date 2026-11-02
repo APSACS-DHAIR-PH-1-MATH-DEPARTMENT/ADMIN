@@ -10,7 +10,7 @@ window.APS_CONFIG = {
   // Apps Script web app URL — it ends with /exec  (NOT /dev)
   API_BASE_URL: "https://script.google.com/macros/s/AKfycbwzWi1Sif7TvHR-0xmCjmdrP2xJZ_aWCcJrQvLqQQbdo9qYS-Esdq3abHxRy8wuARt9qw/exec",
 
-  API_KEY: "PASTE_STAFF_API_KEY_HERE",
+  API_KEY: "apsf_4549616ec964469a9155b3cbe198e364bdf2d14d",
 
   REQUEST_TIMEOUT_MS: 25000   // Apps Script can take 6-8 s to wake up
 };
