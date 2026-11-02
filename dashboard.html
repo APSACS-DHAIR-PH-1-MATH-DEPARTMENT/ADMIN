@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Home — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card hello">
+        <p class="greet" id="greet">Loading…</p>
+        <p class="muted small" id="hello-sub"></p>
+      </div>
+      <div id="home" hidden>
+        <div class="tiles" aria-label="Students">
+          <div class="tile"><div class="tile__n" id="t-pending">—</div><div class="tile__l">Waiting for approval</div></div>
+          <div class="tile"><div class="tile__n" id="t-active">—</div><div class="tile__l">Active students</div></div>
+          <div class="tile"><div class="tile__n" id="t-suspended">—</div><div class="tile__l">Suspended</div></div>
+        </div>
+        <div class="card">
+          <h2>By class</h2>
+          <div class="tablewrap"><table class="table"><thead><tr><th>Class</th><th>Waiting</th><th>Active</th><th>Suspended</th></tr></thead><tbody id="class-rows"></tbody></table></div>
+        </div>
+        <div class="card">
+          <h2>Waiting for approval</h2>
+          <div id="flash" role="status" hidden></div>
+          <button class="btn btn--gold" id="approve-all" type="button" hidden>Approve everyone waiting</button>
+          <p class="muted" id="pending-empty" hidden>Nobody is waiting. 🎉</p>
+          <p class="small muted" id="pending-note" hidden>Only the administrator can approve students.</p>
+          <div id="pending-list" class="list"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/student-cards.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>
