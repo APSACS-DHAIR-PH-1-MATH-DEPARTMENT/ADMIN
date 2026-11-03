@@ -14,7 +14,7 @@
     if (admin) {
       if (s.status === "pending") acts += '<button class="btn btn--small" data-act="approve" type="button">Approve</button>';
       if (s.status === "active") acts += '<button class="btn btn--small btn--ghost" data-act="resend" type="button">Send ID email again</button>' +
-        '<button class="btn btn--small btn--ghost" data-act="resetpin" type="button">Reset PIN</button>' +
+        '<button class="btn btn--small btn--ghost" data-act="resetpin" type="button">Reset password</button>' +
         '<button class="btn btn--small btn--danger" data-act="suspend" type="button">Suspend</button>';
       if (s.status === "suspended") acts += '<button class="btn btn--small" data-act="reactivate" type="button">Reactivate</button>';
       acts += '<button class="btn btn--small btn--ghost" data-act="edit" type="button">Edit</button>';
@@ -54,7 +54,7 @@
       run(b, Api.staff.resendApproval(s.studentId), function (r) { return r.emailSent ? "The ID email was sent again to " + s.email + "." : "The email could NOT be sent (mail limit?). ID: " + s.studentId; });
     });
     if ((b = btn("resetpin"))) UI.confirmTap(b, "Sure? Tap again", function () {
-      run(b, Api.staff.resetStudentPin(s.studentId), function () { return s.studentName + "'s PIN was cleared. The parent can set a new one with the First time tab."; });
+      run(b, Api.staff.resetStudentPin(s.studentId), function () { return s.studentName + "'s password was cleared. The parent can set a new one with the First time tab."; });
     });
     if ((b = btn("suspend"))) UI.confirmTap(b, "Sure? Tap again", function () {
       run(b, Api.staff.setStudentStatus(s.studentId, "suspended"), function () { return s.studentName + " is suspended and logged out."; });
