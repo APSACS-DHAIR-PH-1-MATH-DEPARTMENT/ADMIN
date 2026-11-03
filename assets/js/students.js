@@ -1,4 +1,4 @@
-/* students.js — every student the signed-in staff member may see, with filters. */
+/* students.js — administrator: every student, with filters and the approve / suspend / edit tools. */
 (function () {
   var $ = UI.$;
   var me = null, ctxBase = null, timer = null, requestNo = 0;
@@ -18,10 +18,10 @@
     }).catch(function (e) { UI.say($("page-msg"), e.message, "bad"); });
   }
 
-  Shell.start("students", false, function (profile) {
+  Shell.start("students", true, function (profile) {
     me = profile;
     Api.staff.summary().then(function (s) {
-      ctxBase = { classes: s.classes.map(function (c) { return c.classLevel; }), sections: s.sections };
+      ctxBase = { classes: s.groups.map(function (g) { return g.classLevel; }).filter(function (c, k, arr) { return arr.indexOf(c) === k; }), sections: s.sections };
       $("f-class").innerHTML += ctxBase.classes.map(function (c) { return '<option value="' + c + '">Class ' + c + "</option>"; }).join("");
       $("f-section").innerHTML += ctxBase.sections.map(function (c) { return '<option value="' + UI.esc(c) + '">Section ' + UI.esc(c) + "</option>"; }).join("");
       ["f-status", "f-class", "f-section"].forEach(function (id) { $(id).addEventListener("change", load); });

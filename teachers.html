@@ -22,13 +22,13 @@
       <div id="page-msg" role="alert" hidden></div>
       <div class="card">
         <h2>Add a teacher</h2>
-        <p class="muted small">We email them a link to set their own PIN. They will only see the classes you tick.</p>
+        <p class="muted small">We email them a link to set their own PIN. They will only see the classes and sections you tick — for example 7A, 8B and 8C.</p>
         <label for="t-name">Full name</label>
         <input class="input" id="t-name" autocomplete="off" maxlength="80">
         <label for="t-email">Email</label>
         <input class="input" id="t-email" type="email" autocomplete="off" autocapitalize="none" maxlength="120">
-        <div class="label">Classes</div>
-        <div class="checks" id="t-classes"></div>
+        <div class="label">Classes and sections</div>
+        <div id="t-classes"></div>
         <button class="btn" id="t-add" type="button">Add teacher and send the email</button>
       </div>
       <div class="card">
@@ -45,6 +45,7 @@
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/api.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/teachers.js"></script>
 </body>

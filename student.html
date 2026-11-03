@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Student — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <p class="small"><a id="back-link" href="classes.html">← Classes</a></p>
+        <h1 id="st-name">Student</h1>
+        <p class="muted" id="st-sub"></p>
+        <div class="actions">
+          <a class="btn btn--small" href="#add-issue" id="go-add">+ Add an issue</a>
+          <button class="btn btn--small btn--ghost" type="button" disabled title="Coming in a later update">Revision remarks · soon</button>
+        </div>
+      </div>
+      <div id="flash" role="status" hidden></div>
+      <div class="card" id="add-issue">
+        <h2>Add a disciplinary issue</h2>
+        <form id="issue-form" novalidate>
+          <label for="i-title">What happened? (short title)</label>
+          <input class="input" id="i-title" maxlength="80" autocomplete="off" placeholder="e.g. Homework not done">
+          <div class="formgrid">
+            <div><label for="i-cat">Type</label><select class="input" id="i-cat"></select></div>
+            <div><label for="i-sev">How serious?</label><select class="input" id="i-sev"></select></div>
+          </div>
+          <label for="i-when">When did it happen? <span class="muted">(Pakistan time)</span></label>
+          <input class="input" id="i-when" type="datetime-local">
+          <label for="i-desc">Details <span class="muted">(optional)</span></label>
+          <textarea class="input input--area" id="i-desc" maxlength="1000" rows="3" placeholder="What exactly happened?"></textarea>
+          <button class="btn" id="i-save" type="submit">Save the issue</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Issues <span class="chip" id="issue-count"></span></h2>
+        <p class="muted" id="issues-empty" hidden>No issues recorded for this student. 👍</p>
+        <div id="issue-list" class="issues"></div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/issue-view.js"></script>
+<script src="assets/js/student.js"></script>
+</body>
+</html>

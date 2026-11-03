@@ -4,9 +4,10 @@
 (function () {
   var TABS = [
     { id: "dashboard", label: "Home",     icon: "🏠", href: "dashboard.html", ready: true },
-    { id: "students",  label: "Students", icon: "🎓", href: "students.html",  ready: true },
+    { id: "classes",   label: "Classes",  icon: "🏫", href: "classes.html",   ready: true },
+    { id: "students",  label: "All students", icon: "🎓", href: "students.html", ready: true, adminOnly: true },
     { id: "teachers",  label: "Teachers", icon: "👩‍🏫", href: "teachers.html",  ready: true, adminOnly: true },
-    { id: "feedback",  label: "Feedback", icon: "💬", href: "feedback.html",  ready: false, adminOnly: true },
+    { id: "feedback",  label: "Feedback", icon: "💬", href: "feedback.html",  ready: true, adminOnly: true },
     { id: "remarks",   label: "Remarks",  icon: "📝", href: "remarks.html",   ready: false }
   ];
   var activeTab = "";
@@ -26,7 +27,7 @@
 
   function userHtml() {
     if (!profile) return "";
-    var meta = profile.role === "admin" ? "Administrator" : "Teacher · Class " + (profile.classes || []).join(", ");
+    var meta = profile.role === "admin" ? "Administrator" : "Teacher · " + (profile.assignments || []).join(", ");
     return '<div class="side__user"><div class="side__uname">' + esc(profile.fullName) + '</div><div class="side__umeta">' + esc(meta) + "</div></div>";
   }
 
@@ -74,16 +75,26 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") open(false); });
   }
 
-  /* Every logged-in page starts here: guard -> frame -> fresh profile from the server -> page code.
-     needAdmin = true sends teachers back to Home. */
+  /* Every logged-in page starts here: guard -> frame -> page code. The saved profile is used at once (no waiting for
+     the server); a fresh copy is fetched in the background to keep the menu and class list up to date.
+     needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   function start(activeId, needAdmin, ready) {
     if (!Auth.requireSession()) return;
     mount(activeId);
-    Api.staff.me().then(function (p) {
-      Storage.setProfile(p); profile = p; render();
+    function go(p) {
       if (needAdmin && p.role !== "admin") { location.replace("dashboard.html"); return; }
       ready(p);
-    }).catch(function (e) {
+    }
+    function refresh() {
+      return Api.staff.me().then(function (p) { Storage.setProfile(p); profile = p; render(); return p; });
+    }
+    var cached = Storage.getProfile();
+    if (cached && cached.role) {
+      go(cached);
+      refresh().catch(function () { /* a dead session is handled by Api.authed (redirects to login) */ });
+      return;
+    }
+    refresh().then(go).catch(function (e) {
       var box = document.getElementById("page-msg");
       if (box) UI.say(box, e.message, "bad");
     });

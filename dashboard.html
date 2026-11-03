@@ -25,16 +25,23 @@
         <p class="muted small" id="hello-sub"></p>
       </div>
       <div id="home" hidden>
-        <div class="tiles" aria-label="Students">
+        <div class="tiles tiles--4" aria-label="Students">
           <div class="tile"><div class="tile__n" id="t-pending">—</div><div class="tile__l">Waiting for approval</div></div>
           <div class="tile"><div class="tile__n" id="t-active">—</div><div class="tile__l">Active students</div></div>
           <div class="tile"><div class="tile__n" id="t-suspended">—</div><div class="tile__l">Suspended</div></div>
+          <div class="tile"><div class="tile__n" id="t-issues">—</div><div class="tile__l">Open issues</div></div>
         </div>
         <div class="card">
-          <h2>By class</h2>
-          <div class="tablewrap"><table class="table"><thead><tr><th>Class</th><th>Waiting</th><th>Active</th><th>Suspended</th></tr></thead><tbody id="class-rows"></tbody></table></div>
+          <h2>Your classes</h2>
+          <div class="tablewrap"><table class="table"><thead><tr><th>Class</th><th>Waiting</th><th>Active</th><th>Suspended</th><th>Open issues</th></tr></thead><tbody id="class-rows"></tbody></table></div>
+          <a class="btn btn--small btn--ghost" href="classes.html">Open classes</a>
         </div>
         <div class="card">
+          <h2>Latest disciplinary issues</h2>
+          <p class="muted" id="issues-empty" hidden>No issues recorded yet.</p>
+          <div id="issue-list" class="list"></div>
+        </div>
+        <div class="card" id="pending-card">
           <h2>Waiting for approval</h2>
           <div id="flash" role="status" hidden></div>
           <button class="btn btn--gold" id="approve-all" type="button" hidden>Approve everyone waiting</button>
@@ -52,6 +59,7 @@
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/api.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/student-cards.js"></script>
 <script src="assets/js/dashboard.js"></script>

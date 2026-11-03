@@ -23,9 +23,10 @@
 
   <div class="card">
     <div class="tabs" role="tablist" aria-label="What do you want to do?">
-      <button class="tab" role="tab" id="tab-login" aria-selected="true" aria-controls="panel-login" type="button">Log in</button>
+      <button class="tab" role="tab" id="tab-login" aria-selected="true" aria-controls="panel-login" type="button">Teacher</button>
       <button class="tab" role="tab" id="tab-setpin" aria-selected="false" aria-controls="panel-pin" type="button">First time</button>
       <button class="tab" role="tab" id="tab-resetpin" aria-selected="false" aria-controls="panel-pin" type="button">Forgot PIN</button>
+      <button class="tab" role="tab" id="tab-admin" aria-selected="false" aria-controls="panel-admin" type="button">Admin</button>
     </div>
 
     <div id="page-msg" role="status" aria-live="polite" hidden></div>
@@ -42,7 +43,23 @@
         <button class="btn" id="l-btn" type="submit">Log in</button>
       </form>
       <div id="login-msg" role="alert" hidden></div>
-      <p class="small muted">First time here? Use the <b>First time</b> tab with the email address the school has for you.</p>
+      <p class="small muted">Teacher, first time here? Use the <b>First time</b> tab with the email address the school has for you. Administrator? Use the <b>Admin</b> tab.</p>
+    </section>
+
+    <section id="panel-admin" role="tabpanel" aria-labelledby="tab-admin" hidden>
+      <h2>Administrator</h2>
+      <p class="muted small">Log in with your email and the administrator password.</p>
+      <form id="admin-form" novalidate>
+        <label for="a-email">Email</label>
+        <input class="input" id="a-email" name="username" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="120">
+        <label for="a-pass">Password</label>
+        <div class="field-row">
+          <input class="input" id="a-pass" name="password" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false" maxlength="200">
+          <button class="toggle" type="button" data-toggle-pin="a-pass" aria-pressed="false">Show</button>
+        </div>
+        <button class="btn" id="a-btn" type="submit">Log in as administrator</button>
+      </form>
+      <div id="admin-msg" role="alert" hidden></div>
     </section>
 
     <section id="panel-pin" role="tabpanel" hidden>

@@ -1,4 +1,4 @@
-/* login.js — Log in (email + PIN) | First time | Forgot PIN.
+/* login.js — Teacher (email + PIN) | First time | Forgot PIN | Admin (email + password).
    First time and Forgot PIN are the same two steps: A) email + new PIN twice, B) the 6-digit code emailed to that address.
    The PIN is held only in memory between A and B. It is never saved. */
 (function () {
@@ -29,10 +29,12 @@
 
   function setMode(next) {
     mode = next;
-    ["login", "setpin", "resetpin"].forEach(function (m) { $("tab-" + m).setAttribute("aria-selected", String(m === mode)); });
+    ["login", "setpin", "resetpin", "admin"].forEach(function (m) { $("tab-" + m).setAttribute("aria-selected", String(m === mode)); });
     $("panel-login").hidden = mode !== "login";
-    $("panel-pin").hidden = mode === "login";
-    UI.clear($("login-msg")); UI.clear($("pin-msg")); UI.clear($("page-msg"));
+    $("panel-admin").hidden = mode !== "admin";
+    $("panel-pin").hidden = mode === "login" || mode === "admin";
+    UI.clear($("login-msg")); UI.clear($("pin-msg")); UI.clear($("page-msg")); UI.clear($("admin-msg"));
+    if (mode === "admin") { $("a-email").focus(); return; }
     if (mode === "setpin") {
       $("pin-title").textContent = "Set your PIN";
       $("pin-intro").textContent = "Choose your own 6-digit PIN. Then we email a 6-digit code to you to confirm it.";
@@ -44,10 +46,13 @@
     var first = mode === "login" ? $("l-email") : ($("p-email").value ? $("p-pin") : $("p-email"));
     if (first) first.focus();
   }
-  ["login", "setpin", "resetpin"].forEach(function (m) { $("tab-" + m).addEventListener("click", function () { setMode(m); }); });
+  ["login", "setpin", "resetpin", "admin"].forEach(function (m) { $("tab-" + m).addEventListener("click", function () { setMode(m); }); });
+  var savedAdmin = ""; try { savedAdmin = localStorage.getItem("aps-staff:admin-email") || ""; } catch (e) { savedAdmin = ""; }
+  if (savedAdmin) $("a-email").value = savedAdmin;
 
   if (emailFromLink) { $("p-email").value = emailFromLink; $("l-email").value = emailFromLink; }
   if (wantedMode) setMode(wantedMode);
+  else if (/[?&]mode=admin/.test(params)) setMode("admin");
 
   $("login-form").addEventListener("submit", function (ev) {
     ev.preventDefault();
@@ -60,6 +65,21 @@
     Auth.login(email, pin)
       .then(function () { location.replace("dashboard.html"); })
       .catch(function (e) { UI.busy($("l-btn"), false); UI.say(msg, e.message, "bad"); $("l-pin").value = ""; });
+  });
+
+  $("admin-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var email = $("a-email").value, pass = $("a-pass").value, msg = $("admin-msg");
+    UI.clear(msg);
+    if (!Auth.isValidEmail(email)) return UI.say(msg, "Please type your email address.", "bad");
+    if (!pass) return UI.say(msg, "Please type the password.", "bad");
+    UI.busy($("a-btn"), true, "Logging in…");
+    Auth.adminLogin(email, pass)
+      .then(function () {
+        try { localStorage.setItem("aps-staff:admin-email", Auth.normalizeEmail(email)); } catch (e) { /* ignore */ }
+        location.replace("dashboard.html");
+      })
+      .catch(function (e) { UI.busy($("a-btn"), false); UI.say(msg, e.message, "bad"); $("a-pass").value = ""; });
   });
 
   function startCooldown() {

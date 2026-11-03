@@ -17,6 +17,14 @@
       return data;
     });
   }
+  function adminLogin(email, password) {
+    return window.Api.staff.adminLogin(normalizeEmail(email), password).then(function (data) {
+      if (!data || !data.token) throw new Error("The server did not return a session. Please try again.");
+      window.Storage.setToken(data.token);
+      window.Storage.setProfile(data.profile || null);
+      return data;
+    });
+  }
   function logout() {
     return window.Api.staff.logout().catch(function () {}).then(function () {
       window.Storage.clearSession();
@@ -27,5 +35,5 @@
     if (!window.Storage.getToken()) { window.location.replace("login.html"); return false; }
     return true;
   }
-  window.Auth = { normalizeEmail: normalizeEmail, isValidEmail: isValidEmail, pinRuleError: pinRuleError, login: login, logout: logout, requireSession: requireSession };
+  window.Auth = { normalizeEmail: normalizeEmail, isValidEmail: isValidEmail, pinRuleError: pinRuleError, login: login, adminLogin: adminLogin, logout: logout, requireSession: requireSession };
 })();

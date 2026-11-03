@@ -10,6 +10,7 @@
 
   function cardHtml(s, ctx) {
     var admin = ctx.isAdmin, acts = "";
+    acts += '<a class="btn btn--small btn--ghost" href="student.html?id=' + encodeURIComponent(s.studentId) + '&c=' + encodeURIComponent(s.classLevel) + '&s=' + encodeURIComponent(s.section || "") + '#issues">Issues' + (s.issueCount ? " (" + s.issueCount + ")" : "") + "</a>";
     if (admin) {
       if (s.status === "pending") acts += '<button class="btn btn--small" data-act="approve" type="button">Approve</button>';
       if (s.status === "active") acts += '<button class="btn btn--small btn--ghost" data-act="resend" type="button">Send ID email again</button>' +
