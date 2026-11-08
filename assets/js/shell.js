@@ -5,6 +5,8 @@
   var TABS = [
     { id: "dashboard", label: "Home",     icon: "🏠", href: "dashboard.html", ready: true },
     { id: "classes",   label: "Classes",  icon: "🏫", href: "classes.html",   ready: true },
+    { id: "tests",     label: "Tests",    icon: "🎯", href: "tests.html",     ready: true },
+    { id: "questions", label: "Question bank", icon: "📚", href: "questions.html", ready: true },
     { id: "students",  label: "All students", icon: "🎓", href: "students.html", ready: true, adminOnly: true },
     { id: "teachers",  label: "Teachers", icon: "👩‍🏫", href: "teachers.html",  ready: true, adminOnly: true },
     { id: "feedback",  label: "Feedback", icon: "💬", href: "feedback.html",  ready: true, adminOnly: true },

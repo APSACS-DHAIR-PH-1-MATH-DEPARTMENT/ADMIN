@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Tests — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h1>Diagnostic tests</h1>
+        <p class="muted" id="t-sub">Tests you can see. Students take them on the student site; you see the results here.</p>
+        <button class="btn btn--small" id="new-toggle" type="button" aria-expanded="false">+ New test</button>
+      </div>
+
+      <form class="card" id="new-form" hidden novalidate>
+        <h2>New test</h2>
+        <label for="n-title">Title</label>
+        <input class="input" id="n-title" maxlength="80" autocomplete="off" placeholder="e.g. Decimals diagnostic">
+        <div class="formgrid">
+          <div><label for="n-class">Class</label><select class="input" id="n-class"></select></div>
+          <div><label for="n-chapter">Chapter</label><select class="input" id="n-chapter"></select></div>
+        </div>
+        <div class="label">Sections</div>
+        <div id="n-sections" class="checks"></div>
+        <div class="label">Topics</div>
+        <p class="hint">Questions are chosen once, mixed 40% easy / 40% medium / 20% challenging in every topic, and every student gets the same questions.</p>
+        <div id="n-topics" class="checks"></div>
+        <div class="formgrid">
+          <div><label for="n-per">Questions per topic</label><input class="input" id="n-per" type="number" min="1" max="30" value="8" inputmode="numeric"></div>
+          <div><label for="n-time">Time limit (minutes)</label><input class="input" id="n-time" type="number" min="5" max="180" inputmode="numeric" placeholder="auto"></div>
+        </div>
+        <p class="hint" id="n-total"></p>
+        <div class="formgrid">
+          <div><label for="n-attempts">Attempts allowed</label><select class="input" id="n-attempts"><option value="1">1 attempt</option><option value="2">2 attempts</option><option value="3">3 attempts</option></select></div>
+          <div><label for="n-vis">Students see the result</label><select class="input" id="n-vis"><option value="now">Right after they submit</option><option value="afterClose">After the test closes</option></select></div>
+        </div>
+        <div class="formgrid">
+          <div><label for="n-opens">Opens (optional)</label><input class="input" id="n-opens" type="datetime-local"></div>
+          <div><label for="n-closes">Closes (optional)</label><input class="input" id="n-closes" type="datetime-local"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="n-publish" checked> <span>Publish now (students can see it at once)</span></label>
+        <div id="n-msg" role="alert" hidden></div>
+        <button class="btn" id="n-save" type="submit">Create test</button>
+      </form>
+
+      <div id="flash" role="status" hidden></div>
+      <div id="t-list" class="list" aria-live="polite"></div>
+      <p class="muted" id="t-empty" hidden>No tests yet. Press “+ New test”. The question bank must have questions for your class first.</p>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/vendor/katex/katex.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/tex.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/tests.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Test report — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div id="loading" class="skeleton" aria-label="Loading"></div>
+      <div id="r-wrap" hidden>
+        <div class="card">
+          <a class="small" href="tests.html">← All tests</a>
+          <h1 id="r-title">Report</h1>
+          <p class="muted" id="r-sub"></p>
+          <div class="tiles tiles--4" id="r-tiles"></div>
+        </div>
+        <div id="r-class">
+          <div class="card" id="r-support-card"><h2>Needs support</h2><p class="hint">Below 50% overall, or below 40% in any topic with at least 3 questions.</p><div id="r-support" class="list"></div></div>
+          <div class="card"><h2>Topics (whole class)</h2><div id="r-topics"></div></div>
+          <div class="card" id="r-diff-card"><h2>Difficulty (whole class)</h2><div id="r-diff"></div></div>
+          <div class="card" id="r-tags-card"><h2>Common mistakes</h2><div id="r-tags" class="list"></div></div>
+          <div class="card" id="r-hard-card"><h2>Hardest questions</h2><div id="r-hard" class="list"></div></div>
+          <div class="card"><h2>Suggested actions</h2><ul class="advice" id="r-recs"></ul></div>
+          <div class="card"><h2>Students</h2><div class="tablewrap"><table class="table"><thead><tr><th>Student</th><th>Sec</th><th>Status</th><th>Score</th><th></th></tr></thead><tbody id="r-rows"></tbody></table></div></div>
+        </div>
+        <div id="r-student" hidden>
+          <div class="card">
+            <button class="linkbtn" id="s-back" type="button">← Back to class report</button>
+            <h2 id="s-name"></h2>
+            <p class="muted" id="s-meta"></p>
+            <div id="s-msg" role="alert" hidden></div>
+            <button class="btn btn--small btn--ghost" id="s-retake" type="button">Allow one more attempt</button>
+          </div>
+          <div id="s-body"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/vendor/katex/katex.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/tex.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/report.js"></script>
+</body>
+</html>

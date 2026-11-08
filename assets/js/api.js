@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/listQuestions": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -87,7 +87,18 @@
       updateIssue: function (issueId, fields) { var p = { issueId: issueId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateIssue", p); },
       voidIssue: function (issueId) { return authed("staff/voidIssue", { issueId: issueId }); },
       listFeedback: function (status) { return authed("staff/listFeedback", status ? { status: status } : {}); },
-      reviewFeedback: function (feedbackId, decision) { return authed("staff/reviewFeedback", { feedbackId: feedbackId, decision: decision }); }
+      reviewFeedback: function (feedbackId, decision) { return authed("staff/reviewFeedback", { feedbackId: feedbackId, decision: decision }); },
+      assessmentOptions: function () { return authed("staff/assessmentOptions"); },
+      createAssessment: function (fields) { return authed("staff/createAssessment", fields); },
+      updateAssessment: function (assessmentId, fields) { var p = { assessmentId: assessmentId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateAssessment", p); },
+      setAssessmentStatus: function (assessmentId, status) { return authed("staff/setAssessmentStatus", { assessmentId: assessmentId, status: status }); },
+      listAssessments: function () { return authed("staff/listAssessments"); },
+      assessmentReport: function (assessmentId) { return authed("staff/assessmentReport", { assessmentId: assessmentId }); },
+      studentAssessmentReport: function (assessmentId, studentId, attemptId) { var p = { assessmentId: assessmentId, studentId: studentId }; if (attemptId) p.attemptId = attemptId; return authed("staff/studentAssessmentReport", p); },
+      allowRetake: function (assessmentId, studentId) { return authed("staff/allowRetake", { assessmentId: assessmentId, studentId: studentId }); },
+      questionBank: function () { return authed("staff/questionBank"); },
+      listQuestions: function (classLevel, chapterRef, topic) { var p = { classLevel: classLevel, chapterRef: chapterRef }; if (topic) p.topic = topic; return authed("staff/listQuestions", p); },
+      importQuestions: function (csv, save) { return authed("staff/importQuestions", { csv: csv, save: save === true }); }
     }
   };
 })();
