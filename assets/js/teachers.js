@@ -9,13 +9,20 @@
   function grid(chosenPairs) {
     var head = '<div class="pairs__row pairs__row--head"><span></span>' + sections.map(function (s) { return '<span>Section ' + UI.esc(s) + "</span>"; }).join("") + "</div>";
     var rows = classes.map(function (c) {
-      return '<div class="pairs__row"><span class="pairs__cls">Class ' + c + "</span>" + sections.map(function (s) {
+      return '<div class="pairs__row"><span class="pairs__cls">Class ' + c + ' <button class="linkbtn pairs__all" type="button" data-all="' + c + '">All</button></span>' + sections.map(function (s) {
         var k = c + s;
         return '<label class="pairs__cell"><input type="checkbox" data-pair="' + UI.esc(k) + '"' + (chosenPairs.indexOf(k) !== -1 ? " checked" : "") + '><span class="pairs__k">' + UI.esc(k) + "</span></label>";
       }).join("") + "</div>";
     }).join("");
     return '<div class="pairs">' + head + rows + "</div>";
   }
+  /* "All" next to a class ticks (or unticks) every section of that class. */
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.getAttribute && e.target.getAttribute("data-all"); if (!b) return;
+    var row = e.target.closest(".pairs__row"), boxes = row.querySelectorAll("input[data-pair]"), all = true, i;
+    for (i = 0; i < boxes.length; i++) if (!boxes[i].checked) all = false;
+    for (i = 0; i < boxes.length; i++) boxes[i].checked = !all;
+  });
   function chosen(root) {
     return Array.prototype.map.call(root.querySelectorAll("input[data-pair]:checked"), function (i) { return i.getAttribute("data-pair"); });
   }
@@ -57,6 +64,7 @@
 
   function load() {
     return Api.staff.listTeachers().then(function (r) {
+      if (!r.classes || !r.sections) { UI.say($("page-msg"), "The backend did not send the class list. It is probably an older version: in Apps Script use Deploy > Manage deployments > pencil > New version > Deploy.", "bad"); return; }
       classes = r.classes; sections = r.sections;
       if (!$("t-classes").innerHTML) $("t-classes").innerHTML = grid([]);
       $("t-list").innerHTML = r.teachers.map(cardHtml).join("");

@@ -15,6 +15,6 @@
     clearSession: function () { del(TOKEN_KEY); del(PROFILE_KEY); },
     /* Which login page this browser uses (just "teacher" or "admin"; not a secret). */
     setPortal: function (p) { try { localStorage.setItem("aps-staff:portal", p === "teacher" ? "teacher" : "admin"); } catch (e) { /* ignore */ } },
-    loginPage: function () { var p = null; try { p = localStorage.getItem("aps-staff:portal"); } catch (e) { p = null; } return p === "teacher" ? "teacher.html" : "login.html"; }
+    loginPage: function () { var p = null; try { p = localStorage.getItem("aps-staff:portal"); } catch (e) { p = null; } return p === "admin" ? "login.html" : "teacher.html"; }
   };
 })();

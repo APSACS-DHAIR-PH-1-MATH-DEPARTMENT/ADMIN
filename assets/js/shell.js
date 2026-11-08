@@ -80,12 +80,28 @@
   /* Every logged-in page starts here: guard -> frame -> page code. The saved profile is used at once (no waiting for
      the server); a fresh copy is fetched in the background to keep the menu and class list up to date.
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
+  /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
+     cryptic red errors on every page. The health call is public and costs one request. */
+  var REQUIRED_BUILD = 7;
+  function checkBackend(p) {
+    try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
+    Api.health().then(function (r) {
+      if (r && r.build >= REQUIRED_BUILD) { try { sessionStorage.setItem("aps-staff:build-ok", "1"); } catch (e) { /* ignore */ } return; }
+      var main = document.querySelector("main"), box = document.createElement("div");
+      box.className = "notice notice--bad"; box.setAttribute("role", "alert");
+      box.textContent = p && p.role === "admin"
+        ? "The backend (Google Apps Script) is older than this website, so some pages will show errors. Fix: open Apps Script, paste ALL the latest .gs files, run setupSystem(), then Deploy > Manage deployments > pencil > Version: New version > Deploy."
+        : "The school system is being updated. Some pages may not work for a short while. Please try again later.";
+      if (main) main.insertBefore(box, main.firstChild);
+    }).catch(function () { /* offline: nothing to say */ });
+  }
+
   function start(activeId, needAdmin, ready) {
     if (!Auth.requireSession()) return;
     mount(activeId);
     function go(p) {
       if (needAdmin && p.role !== "admin") { location.replace("dashboard.html"); return; }
-      ready(p);
+      ready(p); checkBackend(p);
     }
     function refresh() {
       return Api.staff.me().then(function (p) { Storage.setProfile(p); profile = p; render(); return p; });

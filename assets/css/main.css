@@ -314,3 +314,4 @@ a.side__item:hover { background: rgba(255, 255, 255, .12); }
 .impsum__bad { color: var(--bad); font-weight: 800; }
 .impsum__errs { color: var(--bad); font-size: .9rem; padding-left: 18px; }
 #imp-card .btn, #imp-card .input { margin-top: 8px; }
+.pairs__all { margin-left: 4px; font-size: .75rem; }
