@@ -22,7 +22,7 @@
 
   function cardHtml(t) {
     var isAdmin = t.role === "admin";
-    var status = t.status === "active" ? (isAdmin || t.hasPin ? "Active" : "Waiting for PIN") : "Suspended";
+    var status = t.status === "active" ? (isAdmin || t.hasPin ? "Active" : "Waiting for password") : "Suspended";
     var acts = '<button class="btn btn--small btn--ghost" data-act="edit" type="button">Edit</button>';
     if (!isAdmin) acts += t.status === "active"
       ? '<button class="btn btn--small btn--danger" data-act="suspend" type="button">Suspend</button>'
@@ -73,7 +73,7 @@
       UI.busy($("t-add"), true, "Adding…");
       Api.staff.createTeacher(name, email, picked).then(function (r) {
         UI.busy($("t-add"), false);
-        say(r.emailSent ? name + " was added. An email with the Set-PIN link was sent to " + r.teacher.email + "."
+        say(r.emailSent ? name + " was added. An email with the Set-password link was sent to " + r.teacher.email + "."
           : name + " was added, but the email could NOT be sent. Ask them to open the staff login page and use the First time tab with " + r.teacher.email + ".", r.emailSent ? "ok" : "info");
         $("t-name").value = ""; $("t-email").value = "";
         Array.prototype.forEach.call($("t-classes").querySelectorAll("input"), function (i) { i.checked = false; });

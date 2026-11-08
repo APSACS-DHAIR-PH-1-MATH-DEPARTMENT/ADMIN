@@ -52,7 +52,7 @@
     return call(operation, p).catch(function (err) {
       if (isSessionOver(err) || isInactive(err)) {
         window.Storage.clearSession();
-        window.location.replace("login.html?" + (isInactive(err) ? "inactive=1" : "expired=1"));
+        window.location.replace(window.Storage.loginPage() + "?" + (isInactive(err) ? "inactive=1" : "expired=1"));
       }
       throw err;
     });

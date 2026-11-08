@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#14532d">
-  <title>Log in — Staff Portal</title>
+  <title>Administrator login — Staff Portal</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" href="assets/img/favicon.ico">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
@@ -17,38 +17,16 @@
 <main class="wrap wrap--auth">
   <div class="hero">
     <img class="hero__logo" src="assets/img/logo-512.webp" width="132" height="132" alt="APSACS DHA-I R Phase 1 Mathematics Department logo">
-    <h1 class="hero__title">Staff Portal</h1>
+    <h1 class="hero__title">Administrator</h1>
     <p class="hero__dept">APSACS DHA-I R Phase 1 Mathematics Department</p>
   </div>
 
   <div class="card">
-    <div class="tabs" role="tablist" aria-label="What do you want to do?">
-      <button class="tab" role="tab" id="tab-login" aria-selected="true" aria-controls="panel-login" type="button">Teacher</button>
-      <button class="tab" role="tab" id="tab-setpin" aria-selected="false" aria-controls="panel-pin" type="button">First time</button>
-      <button class="tab" role="tab" id="tab-resetpin" aria-selected="false" aria-controls="panel-pin" type="button">Forgot PIN</button>
-      <button class="tab" role="tab" id="tab-admin" aria-selected="false" aria-controls="panel-admin" type="button">Admin</button>
-    </div>
 
     <div id="page-msg" role="status" aria-live="polite" hidden></div>
 
-    <section id="panel-login" role="tabpanel" aria-labelledby="tab-login">
-      <form id="login-form" novalidate>
-        <label for="l-email">Email</label>
-        <input class="input" id="l-email" name="username" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="120">
-        <label for="l-pin">PIN (6 digits)</label>
-        <div class="field-row">
-          <input class="input input--pin" id="l-pin" name="password" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6">
-          <button class="toggle" type="button" data-toggle-pin="l-pin" aria-pressed="false">Show</button>
-        </div>
-        <button class="btn" id="l-btn" type="submit">Log in</button>
-      </form>
-      <div id="login-msg" role="alert" hidden></div>
-      <p class="small muted">Teacher, first time here? Use the <b>First time</b> tab with the email address the school has for you. Administrator? Use the <b>Admin</b> tab.</p>
-    </section>
-
-    <section id="panel-admin" role="tabpanel" aria-labelledby="tab-admin" hidden>
-      <h2>Administrator</h2>
-      <p class="muted small">Log in with your email and the administrator password.</p>
+    <section id="panel-admin">
+            <p class="muted small">Log in with your email and the administrator password.</p>
       <form id="admin-form" novalidate>
         <label for="a-email">Email</label>
         <input class="input" id="a-email" name="username" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="120">
@@ -60,32 +38,7 @@
         <button class="btn" id="a-btn" type="submit">Log in as administrator</button>
       </form>
       <div id="admin-msg" role="alert" hidden></div>
-    </section>
-
-    <section id="panel-pin" role="tabpanel" hidden>
-      <h2 id="pin-title">Set your PIN</h2>
-      <p class="muted" id="pin-intro">Choose your own 6-digit PIN. Then we email a 6-digit code to you to confirm it.</p>
-      <div id="step-pin">
-        <label for="p-email">Email</label>
-        <input class="input" id="p-email" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="120">
-        <label for="p-pin">Choose a PIN (6 digits)</label>
-        <div class="field-row">
-          <input class="input input--pin" id="p-pin" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6">
-          <button class="toggle" type="button" data-toggle-pin="p-pin" aria-pressed="false">Show</button>
-        </div>
-        <label for="p-pin2">Type the PIN again</label>
-        <input class="input input--pin" id="p-pin2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6">
-        <button class="btn" id="p-send" type="button">Continue — email me a code</button>
-      </div>
-      <div id="step-code" hidden>
-        <div class="notice notice--info" id="code-note"></div>
-        <label for="p-code">6-digit code from the email</label>
-        <input class="input input--pin" id="p-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
-        <button class="btn" id="p-save" type="button">Confirm and save my PIN</button>
-        <button class="btn btn--ghost" id="p-resend" type="button">Send the code again</button>
-        <button class="linkbtn" id="p-back" type="button">← Change the email or PIN</button>
-      </div>
-      <div id="pin-msg" role="alert" hidden></div>
+      <p class="small muted">Are you a teacher? <a href="teacher.html">Go to the Teacher portal</a>.</p>
     </section>
   </div>
 
