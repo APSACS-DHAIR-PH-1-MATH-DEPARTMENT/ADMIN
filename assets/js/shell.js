@@ -31,7 +31,7 @@
   function userHtml() {
     if (!profile) return "";
     var meta = profile.role === "admin" ? "Administrator" : "Teacher · " + (profile.assignments || []).join(", ");
-    return '<div class="side__user"><div class="side__uname">' + esc(UI.name(profile.fullName)) + '</div><div class="side__umeta">' + esc(meta) + "</div></div>";
+    return '<div class="side__user"><div class="side__uname">' + esc(UI.name(profile.fullName)) + '</div><div class="side__umeta">' + esc(meta) + '</div><div class="side__umeta side__uid">ID ' + esc(profile.teacherId || "") + "</div></div>";
   }
 
   function open(on) {
@@ -83,7 +83,7 @@
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
      cryptic red errors on every page. The health call is public and costs one request. */
-  var REQUIRED_BUILD = 11;
+  var REQUIRED_BUILD = 12;
   function checkBackend(p) {
     try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
     Api.health().then(function (r) {

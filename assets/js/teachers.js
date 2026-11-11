@@ -37,7 +37,7 @@
     return '<article class="rowcard" data-id="' + UI.esc(t.teacherId) + '">' +
       '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(t.fullName)) + '</div><div class="small muted">' + UI.esc(t.email) + "</div></div>" +
       '<span class="status status--' + (t.status === "active" ? "active" : "suspended") + '">' + UI.esc(status) + "</span></div>" +
-      '<div class="rowcard__meta"><span>' + (isAdmin ? "Administrator — all classes and sections" : "Teacher — " + UI.esc(t.assignments.join(", "))) + "</span></div>" +
+      '<div class="rowcard__meta"><span>' + (isAdmin ? "Administrator — all classes and sections" : "Teacher — " + UI.esc(t.assignments.join(", "))) + '</span><span>ID: <b class="idtext">' + UI.esc(t.teacherId) + "</b></span></div>" +
       '<div class="actions">' + acts + "</div>" +
       '<form class="editform" hidden><label>Full name<input class="input" data-f="fullName" value="' + UI.esc(t.fullName) + '" maxlength="80"></label>' +
       (isAdmin ? "" : '<div class="label">Classes and sections</div>' + grid(t.assignments)) +
