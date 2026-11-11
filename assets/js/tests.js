@@ -23,7 +23,7 @@
     if (t.opensAt) when.push("Opens " + DT.format(t.opensAt)); if (t.closesAt) when.push("Closes " + DT.format(t.closesAt));
     if (t.status === "published" && t.window && WINDOW[t.window]) when.push(WINDOW[t.window]);
     if (when.length) c.appendChild(h("p", "small muted", when.join(" · ")));
-    c.appendChild(h("p", "small muted", "Created by " + t.createdByName));
+    c.appendChild(h("p", "small muted", "Created by " + UI.name(t.createdByName)));
     var actions = h("div", "actions");
     var rep = h("a", "btn btn--small", "Results & diagnosis"); rep.href = "report.html?id=" + encodeURIComponent(t.assessmentId); actions.appendChild(rep);
     if (t.canManage) {

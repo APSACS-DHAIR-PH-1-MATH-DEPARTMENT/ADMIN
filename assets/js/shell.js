@@ -3,14 +3,14 @@
    Adding a tab later = one line in TABS (ready:true when its page exists). Links are RELATIVE. */
 (function () {
   var TABS = [
-    { id: "dashboard", label: "Home",     icon: "🏠", href: "dashboard.html", ready: true },
-    { id: "classes",   label: "Classes",  icon: "🏫", href: "classes.html",   ready: true },
-    { id: "tests",     label: "Tests",    icon: "🎯", href: "tests.html",     ready: true },
-    { id: "questions", label: "Question bank", icon: "📚", href: "questions.html", ready: true },
-    { id: "students",  label: "All students", icon: "🎓", href: "students.html", ready: true, adminOnly: true },
-    { id: "teachers",  label: "Teachers", icon: "👩‍🏫", href: "teachers.html",  ready: true, adminOnly: true },
-    { id: "feedback",  label: "Feedback", icon: "💬", href: "feedback.html",  ready: true, adminOnly: true },
-    { id: "remarks",   label: "Remarks",  icon: "📝", href: "remarks.html",   ready: false }
+    { id: "dashboard", label: "Home",     icon: "home", href: "dashboard.html", ready: true },
+    { id: "classes",   label: "Classes",  icon: "school", href: "classes.html",   ready: true },
+    { id: "tests",     label: "Tests",    icon: "target", href: "tests.html",     ready: true },
+    { id: "questions", label: "Question bank", icon: "book", href: "questions.html", ready: true },
+    { id: "students",  label: "All students", icon: "cap", href: "students.html", ready: true, adminOnly: true },
+    { id: "teachers",  label: "Teachers", icon: "users", href: "teachers.html",  ready: true, adminOnly: true },
+    { id: "feedback",  label: "Feedback", icon: "chat", href: "feedback.html",  ready: true, adminOnly: true },
+    { id: "remarks",   label: "Remarks",  icon: "note", href: "remarks.html",   ready: false }
   ];
   var activeTab = "";
   var profile = null;
@@ -20,7 +20,7 @@
 
   function navHtml() {
     return TABS.filter(function (t) { return !t.adminOnly || isAdmin(); }).map(function (t) {
-      var inner = '<span class="side__icon" aria-hidden="true">' + t.icon + '</span><span class="side__label">' + esc(t.label) + "</span>";
+      var inner = '<span class="side__icon" aria-hidden="true">' + UI.icon(t.icon) + '</span><span class="side__label">' + esc(t.label) + "</span>";
       if (!t.ready) return '<li><span class="side__item is-soon" aria-disabled="true">' + inner + '<span class="side__tag">Soon</span></span></li>';
       var on = t.id === activeTab;
       return '<li><a class="side__item' + (on ? " is-active" : "") + '" href="' + esc(t.href) + '"' + (on ? ' aria-current="page"' : "") + ">" + inner + "</a></li>";
@@ -30,7 +30,7 @@
   function userHtml() {
     if (!profile) return "";
     var meta = profile.role === "admin" ? "Administrator" : "Teacher · " + (profile.assignments || []).join(", ");
-    return '<div class="side__user"><div class="side__uname">' + esc(profile.fullName) + '</div><div class="side__umeta">' + esc(meta) + "</div></div>";
+    return '<div class="side__user"><div class="side__uname">' + esc(UI.name(profile.fullName)) + '</div><div class="side__umeta">' + esc(meta) + "</div></div>";
   }
 
   function open(on) {
@@ -56,7 +56,7 @@
     var top = document.getElementById("app-header");
     if (top) {
       top.innerHTML =
-        '<button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-controls="app-side" aria-expanded="false">☰</button>' +
+        '<button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-controls="app-side" aria-expanded="false">' + UI.icon("menu") + '</button>' +
         '<img class="header__logo" src="assets/img/logo-128.webp" width="40" height="40" alt="">' +
         '<div class="topbar__text"><div class="header__title">' + esc(cfg.APP_NAME) + '</div><div class="header__sub">' + esc(cfg.DEPARTMENT) + "</div></div>";
     }
@@ -82,7 +82,7 @@
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
      cryptic red errors on every page. The health call is public and costs one request. */
-  var REQUIRED_BUILD = 7;
+  var REQUIRED_BUILD = 8;
   function checkBackend(p) {
     try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
     Api.health().then(function (r) {

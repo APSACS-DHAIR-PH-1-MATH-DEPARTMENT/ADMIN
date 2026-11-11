@@ -9,9 +9,9 @@
   function load() {
     return Api.staff.listIssues(id).then(function (r) {
       var s = r.student;
-      $("st-name").textContent = s.studentName;
-      $("st-sub").textContent = "Class " + s.classLevel + s.section + " · Father: " + s.fatherName + " · " + s.studentId;
-      document.title = s.studentName + " — Staff Portal";
+      $("st-name").textContent = UI.name(s.studentName);
+      $("st-sub").textContent = "Class " + s.classLevel + s.section + " · Father: " + UI.name(s.fatherName) + " · " + s.studentId;
+      document.title = UI.name(s.studentName) + " — Staff Portal";
       $("back-link").href = "class.html?c=" + s.classLevel + "&s=" + encodeURIComponent(s.section || "");
       $("back-link").textContent = "← Class " + s.classLevel + s.section;
       var open = r.issues.filter(function (i) { return i.status === "open"; }).length;

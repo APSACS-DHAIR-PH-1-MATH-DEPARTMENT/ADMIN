@@ -11,7 +11,7 @@
     if (f.status !== "rejected") acts += '<button class="btn btn--small btn--danger" data-d="reject" type="button">Reject</button>';
     if (f.status !== "pending") acts += '<button class="btn btn--small btn--ghost" data-d="pending" type="button">Move back to waiting</button>';
     return '<article class="rowcard" data-id="' + UI.esc(f.feedbackId) + '">' +
-      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(f.studentName) + '</div><div class="small muted">Shown as “' + UI.esc(f.displayName) + " · " + UI.esc(f.classLabel) + "”</div></div>" +
+      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(f.studentName)) + '</div><div class="small muted">Shown as “' + UI.esc(UI.name(f.displayName)) + " · " + UI.esc(f.classLabel) + "”</div></div>" +
       '<span class="small muted">' + UI.esc(DT.format(f.createdAt)) + "</span></div>" +
       '<p class="quote">' + UI.esc(f.message) + "</p>" +
       '<div class="actions">' + acts + "</div></article>";

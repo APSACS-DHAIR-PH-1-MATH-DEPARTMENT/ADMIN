@@ -35,7 +35,7 @@
       ? '<button class="btn btn--small btn--danger" data-act="suspend" type="button">Suspend</button>'
       : '<button class="btn btn--small" data-act="reactivate" type="button">Reactivate</button>';
     return '<article class="rowcard" data-id="' + UI.esc(t.teacherId) + '">' +
-      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(t.fullName) + '</div><div class="small muted">' + UI.esc(t.email) + "</div></div>" +
+      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(t.fullName)) + '</div><div class="small muted">' + UI.esc(t.email) + "</div></div>" +
       '<span class="status status--' + (t.status === "active" ? "active" : "suspended") + '">' + UI.esc(status) + "</span></div>" +
       '<div class="rowcard__meta"><span>' + (isAdmin ? "Administrator — all classes and sections" : "Teacher — " + UI.esc(t.assignments.join(", "))) + "</span></div>" +
       '<div class="actions">' + acts + "</div>" +

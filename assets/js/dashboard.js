@@ -7,10 +7,10 @@
 
   function issueRow(i) {
     return '<a class="rowcard rowcard--link" href="student.html?id=' + encodeURIComponent(i.student.studentId) + '">' +
-      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(i.student.studentName) + '</div>' +
+      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(i.student.studentName)) + '</div>' +
       '<div class="small muted">Class ' + UI.esc(i.student.classLevel) + UI.esc(i.student.section) + " · " + UI.esc(i.title) + '</div></div>' +
       '<span class="status status--' + (i.status === "open" ? "pending" : "active") + '">' + (i.status === "open" ? "Open" : "Resolved") + "</span></div>" +
-      '<div class="small muted">' + UI.esc(DT.format(i.occurredAt)) + " · reported by " + UI.esc(i.reportedByName) + "</div></a>";
+      '<div class="small muted">' + UI.esc(DT.format(i.occurredAt)) + " · reported by " + UI.esc(UI.name(i.reportedByName)) + "</div></a>";
   }
 
   function load() {
@@ -44,7 +44,7 @@
 
   Shell.start("dashboard", false, function (profile) {
     me = profile;
-    $("greet").textContent = "Assalam o Alaikum, " + profile.fullName + "!";
+    $("greet").textContent = "Assalam o Alaikum, " + UI.name(profile.fullName) + "!";
     $("hello-sub").textContent = profile.role === "admin" ? "Administrator — all classes and sections" : "Teacher — " + (profile.assignments || []).join(", ");
     var all = $("approve-all");
     UI.confirmTap(all, "Sure? Tap again to approve all", function () {

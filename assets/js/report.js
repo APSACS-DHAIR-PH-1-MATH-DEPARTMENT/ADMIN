@@ -29,7 +29,7 @@
 
     var sup = clear($("r-support"));
     r.support.forEach(function (x) {
-      var d = h("div", "rowcard"), top = h("div", "rowcard__top"); top.appendChild(h("div", "rowcard__name", x.studentName)); top.appendChild(h("span", "status status--pending", x.scorePct + "%")); d.appendChild(top);
+      var d = h("div", "rowcard"), top = h("div", "rowcard__top"); top.appendChild(h("div", "rowcard__name", UI.name(x.studentName))); top.appendChild(h("span", "status status--pending", x.scorePct + "%")); d.appendChild(top);
       d.appendChild(h("p", "small muted", "Section " + x.section + " · " + x.reasons.join(" · ")));
       var b = h("button", "btn btn--small btn--ghost", "See answers"); b.type = "button"; b.addEventListener("click", function () { openStudent(x.studentId); }); d.appendChild(b); sup.appendChild(d);
     });
@@ -49,7 +49,7 @@
     }
     var tb = clear($("r-rows"));
     r.students.forEach(function (x) {
-      var tr = h("tr"); tr.appendChild(h("td", "", x.studentName)); tr.appendChild(h("td", "", x.section));
+      var tr = h("tr"); tr.appendChild(h("td", "", UI.name(x.studentName))); tr.appendChild(h("td", "", x.section));
       var st = h("td"); st.appendChild(h("span", "status " + (x.status === "submitted" ? "status--active" : "status--pending"), STATUS[x.status] || x.status)); if (x.needsSupport) st.appendChild(h("span", "chip chip--gold", "support")); tr.appendChild(st);
       tr.appendChild(h("td", "", x.status === "submitted" ? x.correct + "/" + x.total + " (" + x.scorePct + "%)" : "—"));
       var td = h("td"); var b = h("button", "linkbtn", x.status === "not_started" ? "Retake" : "Open"); b.type = "button"; b.addEventListener("click", function () { openStudent(x.studentId); }); td.appendChild(b); tr.appendChild(td); tb.appendChild(tr);
@@ -70,7 +70,7 @@
   }
   function drawStudent(r) {
     var st = r.student; current = st.studentId;
-    $("s-name").textContent = st.studentName; $("s-meta").textContent = "Class " + st.classLevel + st.section + " · " + st.studentId + " · attempts used " + r.attempts.length + " of " + r.allowed;
+    $("s-name").textContent = UI.name(st.studentName); $("s-meta").textContent = "Class " + st.classLevel + st.section + " · " + st.studentId + " · attempts used " + r.attempts.length + " of " + r.allowed;
     var body = clear($("s-body"));
     if (!r.attempt) { var c0 = h("div", "card"); c0.appendChild(h("p", "", r.message || "No submitted attempt.")); body.appendChild(c0); return; }
     var at = r.attempt, s = r.summary;

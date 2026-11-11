@@ -20,10 +20,10 @@
       acts += '<button class="btn btn--small btn--ghost" data-act="edit" type="button">Edit</button>';
     }
     return '<article class="rowcard" data-id="' + UI.esc(s.studentId) + '">' +
-      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(s.studentName) + '</div>' +
+      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(s.studentName)) + '</div>' +
       '<div class="small muted">Class ' + UI.esc(s.classLevel) + " · Section " + UI.esc(s.section || "—") + '</div></div>' +
       '<span class="status status--' + UI.esc(s.status) + '">' + UI.esc(STATUS_LABEL[s.status] || s.status) + "</span></div>" +
-      '<div class="rowcard__meta"><span class="idbox">' + UI.esc(s.studentId) + "</span><span>Father: " + UI.esc(s.fatherName) + " (" + UI.esc(s.fatherOccupation) + ")</span><span>" + UI.esc(s.email) + "</span></div>" +
+      '<div class="rowcard__meta"><span class="idbox">' + UI.esc(s.studentId) + "</span><span>Father: " + UI.esc(UI.name(s.fatherName)) + " (" + UI.esc(s.fatherOccupation) + ")</span><span>" + UI.esc(s.email) + "</span></div>" +
       (acts ? '<div class="actions">' + acts + "</div>" : "") +
       (admin ? ('<form class="editform" hidden>' +
       '<label>Student name<input class="input" data-f="studentName" value="' + UI.esc(s.studentName) + '" maxlength="80"></label>' +

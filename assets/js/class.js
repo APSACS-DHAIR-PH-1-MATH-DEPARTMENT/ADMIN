@@ -12,8 +12,8 @@
     var link = "student.html?id=" + encodeURIComponent(s.studentId) + "&c=" + cls + "&s=" + encodeURIComponent(sec);
     var n = s.issueCount, open = s.openIssueCount;
     return '<article class="rowcard">' +
-      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(s.studentName) + '</div>' +
-      '<div class="small muted">Father: ' + UI.esc(s.fatherName) + '</div></div>' +
+      '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(s.studentName)) + '</div>' +
+      '<div class="small muted">Father: ' + UI.esc(UI.name(s.fatherName)) + '</div></div>' +
       '<span class="status status--' + UI.esc(s.status) + '">' + UI.esc(STATUS[s.status] || s.status) + "</span></div>" +
       '<div class="rowcard__meta"><span class="idbox">' + UI.esc(s.studentId) + "</span>" +
       (n ? '<span>' + n + (n === 1 ? " issue" : " issues") + (open ? " · <b>" + open + " open</b>" : " · all resolved") + "</span>" : "<span>No issues</span>") + "</div>" +
