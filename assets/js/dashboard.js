@@ -39,6 +39,10 @@
         });
       }
       $("home").hidden = false;
+      Api.staff.listRequests("open").then(function (q) {
+        var n = q.counts.open, a = $("req-note"); a.hidden = n === 0;
+        if (n) a.textContent = n + " student request" + (n === 1 ? " is" : "s are") + " waiting for your reply. Open Requests";
+      }).catch(function () { /* optional */ });
     }).catch(function (e) { UI.say($("page-msg"), e.message, "bad"); });
   }
 

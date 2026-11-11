@@ -391,3 +391,18 @@ body.lightbox-open { overflow: hidden; }
 .markrow label { margin: 0; font-weight: 700; }
 .input--marks { width: 90px; text-align: center; }
 .markquick { display: flex; gap: 6px; }
+
+/* Update 8 step 5: requests + change marks */
+.chip--btn { cursor: pointer; border: 1px solid var(--line); background: #fff; font: inherit; font-weight: 700; min-height: 36px; padding: 4px 12px; }
+.chip--btn.is-on { background: var(--green); color: #fff; border-color: var(--green); }
+.card--inner { border-style: dashed; margin: 10px 0; }
+.rowcard > * + * { margin-top: 8px; }
+.req--open { border-left: 4px solid var(--info); }
+.req--answered { border-left: 4px solid var(--ok); }
+.reply { margin-top: 8px; display: grid; gap: 6px; }
+.recheck { margin: 6px 0; }
+.recheck .ans { margin: 8px 0; }
+.adj { margin-top: 8px; }
+.adjpanel { margin-top: 8px; }
+.adjpanel__form { margin-top: 6px; }
+#req-note { display: block; text-decoration: none; font-weight: 700; }

@@ -1,8 +1,8 @@
-/* report.js (staff) — build 13 (marks + written answers). One test: class diagnosis, then one student's answers with the mistake type behind each wrong answer. */
+/* report.js (staff) — build 14 (marks + written answers; change marks after a recheck). One test: class diagnosis, then one student's answers with the mistake type behind each wrong answer. */
 (function () {
   var $ = UI.$, h = Kit.h, tex = Kit.tex, clear = Kit.clear;
   var id = decodeURIComponent((location.search.match(/[?&]id=([A-Za-z0-9-]+)/) || [])[1] || "");
-  var current = null, rep = null;
+  var current = null, rep = null, curAttempt = "";
   var STATUS = { submitted: "Submitted", in_progress: "Working now", expired: "Time ran out", not_started: "Not started" };
 
   function tile(n, l) { var t = h("div", "tile"); t.appendChild(h("div", "tile__n", String(n))); t.appendChild(h("div", "tile__l", l)); return t; }
@@ -77,17 +77,20 @@
     if (manual) { var ma = h("div", "ans__line ans__line--right"); ma.appendChild(h("b", "", "Model answer: ")); var mw = h("span", "ans__written"); mw.textContent = String(a.correctText); ma.appendChild(mw); c.appendChild(ma); }
     else if (kind !== "right") { var r = h("div", "ans__line ans__line--right"); r.appendChild(h("b", "", "Right answer: ")); r.appendChild(tex("span", "", String(a.correctText).replace(/\|/g, " , "))); c.appendChild(r); }
     if (manual && a.remark) { var rk = h("div", "ans__remark"); rk.appendChild(h("b", "", "Your remark: ")); rk.appendChild(document.createTextNode(a.remark)); c.appendChild(rk); }
+    if (a.adjusted) top.appendChild(h("span", "chip chip--pending", "marks changed"));
     if (a.errorLabel) c.appendChild(h("div", "small", "Mistake type: " + (Kit.TAG[a.errorTag] || a.errorLabel)));
     if (a.explanation) { var ex = h("div", "ans__why"); ex.appendChild(h("b", "", "Why: ")); ex.appendChild(tex("span", "", a.explanation)); c.appendChild(ex); }
+    if (curAttempt && a.answered !== undefined) c.appendChild(AnswerEdit.panel({ assessmentId: id, attemptId: curAttempt, answer: a, onSaved: function (res) { openStudent(current, true); UI.say($("s-msg"), "Saved. " + res.changes.length + " answer changed; the score is now " + res.scoreAfter.marks + " / " + res.scoreAfter.total + " marks (" + res.scoreAfter.pct + "%).", "ok"); load(); } }));
     return c;
   }
   function drawStudent(r) {
     var st = r.student; current = st.studentId;
     $("s-name").textContent = UI.name(st.studentName); $("s-meta").textContent = "Class " + st.classLevel + st.section + " · " + st.studentId + " · attempts used " + r.attempts.length + " of " + r.allowed;
     var body = clear($("s-body"));
-    if (!r.attempt) { var c0 = h("div", "card"); c0.appendChild(h("p", "", r.message || "No submitted attempt.")); body.appendChild(c0); return; }
-    var at = r.attempt, s = r.summary;
+    curAttempt = ""; if (!r.attempt) { var c0 = h("div", "card"); c0.appendChild(h("p", "", r.message || "No submitted attempt.")); body.appendChild(c0); return; }
+    var at = r.attempt, s = r.summary; curAttempt = at.attemptId;
     var c1 = h("div", "card"); c1.appendChild(h("h2", "", "Score: " + scoreText({ correct: at.correct, total: at.total, marksObtained: at.marksObtained, marksTotal: at.marksTotal, scorePct: at.scorePct })));
+    if (at.originalScorePct !== null && at.originalScorePct !== undefined) c1.appendChild(h("p", "small muted", "Score before marks were changed: " + at.originalMarksObtained + " / " + at.marksTotal + " marks (" + at.originalScorePct + "%)."));
     if (at.pendingCount) { var pw = h("p", ""); pw.appendChild(h("b", "", at.pendingCount + " written answer" + (at.pendingCount === 1 ? " is" : "s are") + " not marked yet, so the score is not final. ")); var pl = h("a", "btn btn--small", "Mark now"); pl.href = "marking.html?id=" + encodeURIComponent(id); pw.appendChild(pl); c1.appendChild(pw); }
     c1.appendChild(h("p", "muted", "Answered " + at.answered + " of " + at.total + " · time used " + Kit.mins(at.timeUsedSec) + (at.late ? " · handed in just after the limit" : "") + (s.needsSupport ? " · NEEDS SUPPORT: " + s.supportReasons.join("; ") : "")));
     if (s.strongest) c1.appendChild(h("p", "", "Strongest: " + s.strongest + (s.weakest ? " · Weakest: " + s.weakest : ""))); body.appendChild(c1);

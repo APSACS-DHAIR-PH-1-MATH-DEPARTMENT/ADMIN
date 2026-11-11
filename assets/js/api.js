@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1, "staff/listRequests": 1, "staff/questionLookup": 1, "staff/flaggedQuestions": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -115,7 +115,13 @@
       restoreAssessment: function (assessmentId) { return authed("staff/restoreAssessment", { assessmentId: assessmentId }); },
       listPatterns: function () { return authed("staff/listPatterns"); },
       savePattern: function (fields) { return authed("staff/savePattern", fields); },
-      deletePattern: function (patternId) { return authed("staff/deletePattern", { patternId: patternId }); }
+      deletePattern: function (patternId) { return authed("staff/deletePattern", { patternId: patternId }); },
+      /* build 14: student requests (help + recheck) and changing marks after a recheck */
+      listRequests: function (status, type) { var p = { status: status || "open" }; if (type) p.type = type; return authed("staff/listRequests", p); },
+      respondRequest: function (requestId, response, responseLink, changes) { var p = { requestId: requestId, response: response, responseLink: responseLink || "" }; if (changes && changes.length) p.changes = changes; return authed("staff/respondRequest", p); },
+      adjustAnswers: function (assessmentId, attemptId, changes) { return authed("staff/adjustAnswers", { assessmentId: assessmentId, attemptId: attemptId, changes: changes }); },
+      questionLookup: function (questionId) { return authed("staff/questionLookup", { questionId: questionId }); },
+      flaggedQuestions: function () { return authed("staff/flaggedQuestions"); }
     }
   };
 })();
