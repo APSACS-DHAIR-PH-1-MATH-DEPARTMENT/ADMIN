@@ -29,38 +29,87 @@
 
       <form class="card" id="new-form" hidden novalidate>
         <h2>New test</h2>
-        <label for="n-title">Title</label>
-        <input class="input" id="n-title" maxlength="80" autocomplete="off" placeholder="e.g. Decimals diagnostic">
+        <p class="hint">Tests do not use the question bank. Add questions from CSV files, pasted CSV text, or type them yourself. The test goes live when you press Create (unless you choose draft or a later time).</p>
+
+        <h3>1. About the test</h3>
         <div class="formgrid">
           <div><label for="n-class">Class</label><select class="input" id="n-class"></select></div>
-          <div><label for="n-chapter">Chapter</label><select class="input" id="n-chapter"></select></div>
+          <div><label for="n-chapter">Chapter</label><input class="input" id="n-chapter" maxlength="60" autocomplete="off" placeholder="e.g. Decimals"></div>
         </div>
+        <label for="n-topic">Topic (optional)</label>
+        <input class="input" id="n-topic" maxlength="60" autocomplete="off" placeholder="Used for questions that have no topic of their own">
         <div class="label">Sections</div>
         <div id="n-sections" class="checks"></div>
-        <div class="label">Topics</div>
-        <p class="hint">Questions are chosen once, mixed 40% easy / 40% medium / 20% challenging in every topic, and every student gets the same questions.</p>
-        <div id="n-topics" class="checks"></div>
-        <div class="formgrid">
-          <div><label for="n-per">Questions per topic</label><input class="input" id="n-per" type="number" min="1" max="30" value="8" inputmode="numeric"></div>
-          <div><label for="n-time">Time limit (minutes)</label><input class="input" id="n-time" type="number" min="5" max="180" inputmode="numeric" placeholder="auto"></div>
+
+        <h3>2. Questions</h3>
+        <details class="qdet" id="pg">
+          <summary>Need questions? Make a prompt for an AI (ChatGPT, Gemini, Claude…)</summary>
+          <p class="hint">Choose how many questions of each kind. Copy the prompt, paste it into your AI, then save the CSV it gives you and drop it below.</p>
+          <div class="formgrid">
+            <div><label for="pg-mcq">Multiple choice</label><input class="input" id="pg-mcq" type="number" min="0" max="200" value="10" inputmode="numeric"></div>
+            <div><label for="pg-tf">True / false</label><input class="input" id="pg-tf" type="number" min="0" max="200" value="4" inputmode="numeric"></div>
+            <div><label for="pg-fill">Fill in the answer</label><input class="input" id="pg-fill" type="number" min="0" max="200" value="4" inputmode="numeric"></div>
+            <div><label for="pg-order">Put in order</label><input class="input" id="pg-order" type="number" min="0" max="200" value="2" inputmode="numeric"></div>
+            <div><label for="pg-easy">Easy %</label><input class="input" id="pg-easy" type="number" min="0" max="100" value="40" inputmode="numeric"></div>
+            <div><label for="pg-medium">Medium %</label><input class="input" id="pg-medium" type="number" min="0" max="100" value="40" inputmode="numeric"></div>
+            <div><label for="pg-challenging">Challenging %</label><input class="input" id="pg-challenging" type="number" min="0" max="100" value="20" inputmode="numeric"></div>
+          </div>
+          <p class="hint" id="pg-hint"></p>
+          <div class="label">Mistake patterns the wrong options should reveal (optional)</div>
+          <div id="pg-tags" class="checks"></div>
+          <label for="pg-notes">Extra notes for the AI (optional)</label>
+          <textarea class="input input--area" id="pg-notes" maxlength="400" placeholder="e.g. use Pakistani rupees and local names in word problems"></textarea>
+          <label for="pg-out">Your prompt</label>
+          <textarea class="input input--area promptbox" id="pg-out" readonly></textarea>
+          <button class="btn btn--small" id="pg-copy" type="button">Copy prompt</button>
+          <div class="formgrid pg-save">
+            <div><label for="pg-saved">My saved patterns</label><select class="input" id="pg-saved"></select></div>
+            <div><label for="pg-name">Save this pattern as</label><input class="input" id="pg-name" maxlength="60" autocomplete="off" placeholder="e.g. Decimals — 20 questions"></div>
+          </div>
+          <div class="actions"><button class="btn btn--small btn--ghost" id="pg-save" type="button">Save pattern</button><button class="btn btn--small btn--ghost" id="pg-del" type="button" hidden>Delete this pattern</button></div>
+          <div id="pg-msg" role="status" hidden></div>
+        </details>
+
+        <div class="dropzone" id="n-drop" role="button" tabindex="0" aria-label="Choose CSV files or drop them here">
+          <strong>Drop CSV files here, or tap to choose</strong>
+          <span class="small muted">One file = one test. You can add several files at once.</span>
         </div>
-        <p class="hint" id="n-total"></p>
+        <input type="file" id="n-files" accept=".csv,.txt,text/csv,text/plain" multiple hidden>
+        <details class="qdet">
+          <summary>Or paste CSV text</summary>
+          <textarea class="input input--area promptbox" id="n-paste" placeholder="Paste the whole CSV here, first line = the column names"></textarea>
+          <button class="btn btn--small btn--ghost" id="n-paste-go" type="button">Check pasted CSV</button>
+        </details>
+        <button class="btn btn--small btn--ghost" id="n-typed" type="button">+ Make a test by typing the questions</button>
+        <p class="hint" id="n-count"></p>
+        <div id="n-drafts" class="list"></div>
+
+        <h3>3. Settings (same for every test above)</h3>
         <div class="formgrid">
+          <div><label for="n-time">Time limit (minutes)</label><input class="input" id="n-time" type="number" min="5" max="180" inputmode="numeric" placeholder="auto: 1 minute per question"></div>
           <div><label for="n-attempts">Attempts allowed</label><select class="input" id="n-attempts"><option value="1">1 attempt</option><option value="2">2 attempts</option><option value="3">3 attempts</option></select></div>
-          <div><label for="n-vis">Students see the result</label><select class="input" id="n-vis"><option value="now">Right after they submit</option><option value="afterClose">After the test closes</option></select></div>
         </div>
-        <div class="formgrid">
-          <div><label for="n-opens">Opens (optional)</label><input class="input" id="n-opens" type="datetime-local"></div>
-          <div><label for="n-closes">Closes (optional)</label><input class="input" id="n-closes" type="datetime-local"></div>
+        <label for="n-vis">Students see the result</label>
+        <select class="input" id="n-vis"><option value="now">Right after they submit</option><option value="afterClose">After the test closes</option></select>
+        <div class="label">When can students take it?</div>
+        <div class="checks">
+          <label class="check check--inline"><input type="radio" name="n-mode" value="now" checked> <span>Live now</span></label>
+          <label class="check check--inline"><input type="radio" name="n-mode" value="schedule"> <span>Open later</span></label>
+          <label class="check check--inline"><input type="radio" name="n-mode" value="draft"> <span>Save as draft (not visible)</span></label>
         </div>
-        <label class="check"><input type="checkbox" id="n-publish" checked> <span>Publish now (students can see it at once)</span></label>
+        <div id="n-when" hidden><label for="n-opens">Opens (Pakistan time)</label><input class="input" id="n-opens" type="datetime-local"></div>
+        <div id="n-durbox" class="formgrid">
+          <div><label for="n-dur">Stays available for (optional)</label><input class="input" id="n-dur" type="number" min="1" inputmode="numeric" placeholder="blank = until I close it"></div>
+          <div><label for="n-unit">Unit</label><select class="input" id="n-unit"><option value="minutes">minutes</option><option value="hours" selected>hours</option><option value="days">days</option></select></div>
+        </div>
         <div id="n-msg" role="alert" hidden></div>
         <button class="btn" id="n-save" type="submit">Create test</button>
       </form>
 
       <div id="flash" role="status" hidden></div>
       <div id="t-list" class="list" aria-live="polite"></div>
-      <p class="muted" id="t-empty" hidden>No tests yet. Press “+ New test”. The question bank must have questions for your class first.</p>
+      <p class="muted" id="t-empty" hidden>No tests yet. Press “+ New test”.</p>
+      <details class="card" id="t-archive" hidden><summary id="t-archive-sum">Archived tests</summary><div id="t-archive-list" class="list"></div></details>
     </main>
   </div>
 </div>
@@ -75,6 +124,8 @@
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/tex.js"></script>
 <script src="assets/js/kit.js"></script>
+<script src="assets/js/test-prompt.js"></script>
+<script src="assets/js/test-new.js"></script>
 <script src="assets/js/tests.js"></script>
 </body>
 </html>

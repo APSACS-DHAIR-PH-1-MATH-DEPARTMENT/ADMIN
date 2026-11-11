@@ -51,6 +51,14 @@
     }
     if (q.slips) c.appendChild(h("div", "small muted", "Known slips: " + String(q.slips).split(";").map(function (s) { var p = s.split("~"); return p[0] + " → " + (Kit.TAG[p[1]] || p[1]); }).join(" · ")));
     if (q.explanation) { var ex = h("div", "ans__why"); ex.appendChild(h("b", "", "Why: ")); ex.appendChild(tex("span", "", q.explanation)); c.appendChild(ex); }
+    if (me && me.role === "admin") {   /* build 10: the administrator can archive a bank question (nothing is deleted) and bring it back */
+      var off = String(q.active || "yes").toLowerCase() === "no", ab = h("button", "btn btn--small btn--ghost", off ? "Restore this question" : "Archive this question"); ab.type = "button";
+      ab.addEventListener("click", function () {
+        UI.busy(ab, true, "…");
+        Api.staff.setQuestionActive(q.questionId, off).then(function () { q.active = off ? "yes" : "no"; var fresh = qCard(q, i); c.parentNode.replaceChild(fresh, c); }).catch(function (e) { UI.busy(ab, false); UI.say($("page-msg"), e.message, "bad"); });
+      });
+      var acts = h("div", "actions"); acts.appendChild(ab); c.appendChild(acts);
+    }
     return c;
   }
   function preview(ch, topic) {

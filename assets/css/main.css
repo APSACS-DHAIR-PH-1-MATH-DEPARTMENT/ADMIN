@@ -347,3 +347,21 @@ body.lightbox-open { overflow: hidden; }
 .logrow__old { font-size: .85rem; color: var(--muted); word-break: break-word; }
 .filters--3 { display: grid; grid-template-columns: 1fr; gap: 0 12px; }
 @media (min-width: 700px) { .filters--3 { grid-template-columns: 1.4fr 1.4fr 1fr; } }
+
+/* ================= build 10: tests without the question bank ================= */
+.dropzone { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 26px 14px; margin: 10px 0; border: 2px dashed var(--green-2); border-radius: 14px; background: var(--green-soft); cursor: pointer; }
+.dropzone:hover, .dropzone.is-over, .dropzone:focus-visible { background: #dcefe3; border-style: solid; outline: none; }
+.qdet { margin: 10px 0; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; background: #fff; }
+.qdet > summary { cursor: pointer; font-weight: 700; color: var(--green); }
+.promptbox { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .82rem; min-height: 160px; }
+.draft { margin-top: 10px; }
+.draft--bad { border-color: var(--bad); }
+.draft .input { margin: 0; }
+.errlist { margin: 6px 0 0 18px; padding: 0; font-size: .88rem; }
+.qprev { border-top: 1px solid var(--line); padding: 8px 0; }
+.qprev__top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.optrow { display: grid; grid-template-columns: 26px 1fr; gap: 6px 8px; align-items: center; margin-bottom: 8px; }
+.optrow input[type=radio] { width: 20px; height: 20px; accent-color: var(--green); }
+.optrow select { grid-column: 2; }
+@media (min-width: 640px) { .optrow { grid-template-columns: 26px 1fr 1fr; } .optrow select { grid-column: auto; } }
+.pg-save { margin-top: 10px; }

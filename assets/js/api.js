@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -102,7 +102,18 @@
       allowRetake: function (assessmentId, studentId) { return authed("staff/allowRetake", { assessmentId: assessmentId, studentId: studentId }); },
       questionBank: function () { return authed("staff/questionBank"); },
       listQuestions: function (classLevel, chapterRef, topic) { var p = { classLevel: classLevel, chapterRef: chapterRef }; if (topic) p.topic = topic; return authed("staff/listQuestions", p); },
-      importQuestions: function (csv, save) { return authed("staff/importQuestions", { csv: csv, save: save === true }); }
+      importQuestions: function (csv, save) { return authed("staff/importQuestions", { csv: csv, save: save === true }); },
+      setQuestionActive: function (questionId, active) { return authed("staff/setQuestionActive", { questionId: questionId, active: active === true }); },
+      /* build 10: tests without the question bank */
+      createCustomTest: function (fields) { return authed("staff/createCustomTest", fields); },
+      setAvailability: function (assessmentId, fields) { var p = { assessmentId: assessmentId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/setAvailability", p); },
+      testQuestions: function (assessmentId) { return authed("staff/testQuestions", { assessmentId: assessmentId }); },
+      updateTestQuestion: function (assessmentId, questionId, fields) { var p = { assessmentId: assessmentId, questionId: questionId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateTestQuestion", p); },
+      archiveAssessment: function (assessmentId) { return authed("staff/archiveAssessment", { assessmentId: assessmentId }); },
+      restoreAssessment: function (assessmentId) { return authed("staff/restoreAssessment", { assessmentId: assessmentId }); },
+      listPatterns: function () { return authed("staff/listPatterns"); },
+      savePattern: function (fields) { return authed("staff/savePattern", fields); },
+      deletePattern: function (patternId) { return authed("staff/deletePattern", { patternId: patternId }); }
     }
   };
 })();
