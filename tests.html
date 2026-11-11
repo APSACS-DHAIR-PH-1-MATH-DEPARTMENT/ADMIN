@@ -55,8 +55,9 @@
             <div><label for="pg-challenging">Challenging %</label><input class="input" id="pg-challenging" type="number" min="0" max="100" value="20" inputmode="numeric"></div>
           </div>
           <p class="hint" id="pg-hint"></p>
+          <p class="hint">Only the four auto-marked kinds are available now. Marks per question and short / long answers (checked by the teacher) are planned as the next step.</p>
           <div class="label">Mistake patterns the wrong options should reveal (optional)</div>
-          <div id="pg-tags" class="checks"></div>
+          <div id="pg-tags"></div>
           <label for="pg-notes">Extra notes for the AI (optional)</label>
           <textarea class="input input--area" id="pg-notes" maxlength="400" placeholder="e.g. use Pakistani rupees and local names in word problems"></textarea>
           <label for="pg-out">Your prompt</label>
@@ -85,8 +86,9 @@
         <div id="n-drafts" class="list"></div>
 
         <h3>3. Settings (same for every test above)</h3>
+        <p class="hint">The time limit is for the WHOLE test, not per question. If you leave it empty it becomes automatic: 1 minute for every question (a test of 20 questions = 20 minutes, never less than 5 or more than 180). Each student's own clock starts when they press Start.</p>
         <div class="formgrid">
-          <div><label for="n-time">Time limit (minutes)</label><input class="input" id="n-time" type="number" min="5" max="180" inputmode="numeric" placeholder="auto: 1 minute per question"></div>
+          <div><label for="n-time">Total time for the whole test (minutes)</label><input class="input" id="n-time" type="number" min="5" max="180" inputmode="numeric" placeholder="empty = automatic"></div>
           <div><label for="n-attempts">Attempts allowed</label><select class="input" id="n-attempts"><option value="1">1 attempt</option><option value="2">2 attempts</option><option value="3">3 attempts</option></select></div>
         </div>
         <label for="n-vis">Students see the result</label>
@@ -124,6 +126,7 @@
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/tex.js"></script>
 <script src="assets/js/kit.js"></script>
+<script src="assets/js/prompt-kit.js"></script>
 <script src="assets/js/test-prompt.js"></script>
 <script src="assets/js/test-new.js"></script>
 <script src="assets/js/tests.js"></script>

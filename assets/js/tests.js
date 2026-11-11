@@ -46,7 +46,7 @@
     var tm = h("input", "input"); tm.type = "number"; tm.min = "5"; tm.max = "180"; tm.value = String(t.timeLimitMin);
     var at = sel([["1", "1 attempt"], ["2", "2 attempts"], ["3", "3 attempts"]]); at.value = String(t.maxAttempts);
     var vs = sel([["now", "Right after they submit"], ["afterClose", "After the test closes"]]); vs.value = t.resultVisibility;
-    p.appendChild(field("Title", ti)); var g = h("div", "formgrid"); g.appendChild(field("Time limit (minutes)", tm)); g.appendChild(field("Attempts allowed", at)); p.appendChild(g); p.appendChild(field("Students see the result", vs));
+    p.appendChild(field("Title", ti)); var g = h("div", "formgrid"); g.appendChild(field("Total time for the whole test (minutes)", tm)); g.appendChild(field("Attempts allowed", at)); p.appendChild(g); p.appendChild(field("Students see the result", vs));
     var msg = h("div"); msg.setAttribute("role", "alert"); msg.hidden = true; p.appendChild(msg);
     var go = btn("Save changes"); go.addEventListener("click", function () {
       UI.clear(msg); UI.busy(go, true, "Saving…");

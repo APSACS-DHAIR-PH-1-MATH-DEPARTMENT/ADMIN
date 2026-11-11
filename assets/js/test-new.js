@@ -118,10 +118,10 @@
     var q = h("textarea", "input input--area"); q.maxLength = 900; q.placeholder = "Write the question. Maths between single dollar signs, e.g. $\\frac{3}{4}$"; f.appendChild(field("Question", q));
 
     var mc = h("div"); mc.appendChild(h("div", "label", "Options — tick the correct one; for wrong options you may pick the mistake it shows"));
-    var optIn = {}, optTag = {}, radios = {}, tagList = [["", "— mistake (optional) —"]].concat((opts.tags || []).map(function (t) { return [t.tag, t.label]; }));
+    var optIn = {}, optTag = {}, radios = {}, tagState = { tags: opts.tags || [], groups: opts.tagGroups || [] };
     ["A", "B", "C", "D"].forEach(function (L, i) {
       var row = h("div", "optrow"), r = h("input"); r.type = "radio"; r.name = "mq-correct-" + d.id; r.value = L; r.checked = i === 0; r.setAttribute("aria-label", "Option " + L + " is correct"); radios[L] = r;
-      var t = h("input", "input"); t.maxLength = 200; t.placeholder = "Option " + L; optIn[L] = t; var s = select(tagList); optTag[L] = s;
+      var t = h("input", "input"); t.maxLength = 200; t.placeholder = "Option " + L; optIn[L] = t; var s = PromptKit.tagSelect(tagState, $("n-class").value); optTag[L] = s;
       row.appendChild(r); row.appendChild(t); row.appendChild(s); mc.appendChild(row);
     });
     var tfBox = h("div"), tf = select([["true", "True"], ["false", "False"]]); tfBox.appendChild(field("Correct answer", tf));
@@ -220,13 +220,13 @@
     $("n-typed").addEventListener("click", function () { var d = newDraft("Typed test " + (drafts.filter(function (x) { return x.source === "typed"; }).length + 1), "typed"); render(d); updateCount(); });
     Array.prototype.forEach.call(document.querySelectorAll('input[name="n-mode"]'), function (r) { r.addEventListener("change", modeChange); }); modeChange();
     $("new-form").addEventListener("submit", submit);
-    TestPrompt.init(opts.tags);
+    TestPrompt.init(opts);
   }
   function modeChange() {
     var m = ticked("n-mode")[0] || "now"; $("n-when").hidden = m !== "schedule"; $("n-durbox").hidden = m === "draft";
   }
   function open() {
-    if (opts) { wire(); TestPrompt.init(opts.tags); updateCount(); return Promise.resolve(); }
+    if (opts) { wire(); TestPrompt.init(opts); updateCount(); return Promise.resolve(); }
     return Api.staff.assessmentOptions().then(function (o) { opts = o; wire(); updateCount(); }).catch(function (e) { UI.say($("n-msg"), e.message, "bad"); });
   }
   window.TestNew = { open: open, onCreated: function (fn) { onCreated = fn; } };

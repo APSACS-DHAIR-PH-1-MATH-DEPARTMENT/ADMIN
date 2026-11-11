@@ -365,3 +365,8 @@ body.lightbox-open { overflow: hidden; }
 .optrow select { grid-column: 2; }
 @media (min-width: 640px) { .optrow { grid-template-columns: 26px 1fr 1fr; } .optrow select { grid-column: auto; } }
 .pg-save { margin-top: 10px; }
+
+/* build 11: grouped mistake-pattern picker */
+.taggroup { margin: 8px 0 12px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.taggroup__h { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; }
+.taggroup .checks { margin: 4px 0 2px; }

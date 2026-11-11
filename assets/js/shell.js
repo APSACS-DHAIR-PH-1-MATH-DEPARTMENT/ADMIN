@@ -83,7 +83,7 @@
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
      cryptic red errors on every page. The health call is public and costs one request. */
-  var REQUIRED_BUILD = 10;
+  var REQUIRED_BUILD = 11;
   function checkBackend(p) {
     try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
     Api.health().then(function (r) {

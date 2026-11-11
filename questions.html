@@ -25,6 +25,40 @@
         <h1>Question bank</h1>
         <p class="muted" id="q-sub">All questions are marked by the server. Students never receive the answers until they submit.</p>
       </div>
+      <div class="card" id="bp-card">
+        <details class="qdet" id="bp">
+          <summary>Make a prompt for an AI to write bank questions (ChatGPT, Gemini, Claude…)</summary>
+          <p class="hint">For plain practice questions with full solutions, any class and chapter. No paper pattern, no marks. Copy the prompt, paste it into your AI, save the CSV it gives you, and import it below.</p>
+          <div class="formgrid">
+            <div><label for="bp-class">Class</label><select class="input" id="bp-class"></select></div>
+            <div><label for="bp-chapter">Chapter</label><input class="input" id="bp-chapter" maxlength="60" autocomplete="off" placeholder="e.g. Decimals: Addition and Subtraction"></div>
+            <div><label for="bp-ref">Chapter code (optional)</label><input class="input" id="bp-ref" maxlength="60" autocomplete="off" placeholder="filled from the chapter name"></div>
+            <div><label for="bp-prefix">Question ID start (optional)</label><input class="input" id="bp-prefix" maxlength="14" autocomplete="off"></div>
+            <div><label for="bp-start">First number</label><input class="input" id="bp-start" type="number" min="1" max="9999" value="1" inputmode="numeric"></div>
+            <div><label for="bp-n">Questions per topic</label><input class="input" id="bp-n" type="number" min="1" max="200" value="10" inputmode="numeric"></div>
+          </div>
+          <label for="bp-topics">Topics (optional, separate with commas — empty = all topics of the chapter)</label>
+          <input class="input" id="bp-topics" maxlength="400" autocomplete="off" placeholder="e.g. Adding decimals, Subtracting decimals, Word problems">
+          <div class="formgrid">
+            <div><label for="bp-mcq">Multiple choice %</label><input class="input" id="bp-mcq" type="number" min="0" max="100" value="55" inputmode="numeric"></div>
+            <div><label for="bp-tf">True / false %</label><input class="input" id="bp-tf" type="number" min="0" max="100" value="15" inputmode="numeric"></div>
+            <div><label for="bp-fill">Fill in the answer %</label><input class="input" id="bp-fill" type="number" min="0" max="100" value="25" inputmode="numeric"></div>
+            <div><label for="bp-order">Put in order %</label><input class="input" id="bp-order" type="number" min="0" max="100" value="5" inputmode="numeric"></div>
+            <div><label for="bp-easy">Easy %</label><input class="input" id="bp-easy" type="number" min="0" max="100" value="40" inputmode="numeric"></div>
+            <div><label for="bp-medium">Medium %</label><input class="input" id="bp-medium" type="number" min="0" max="100" value="40" inputmode="numeric"></div>
+            <div><label for="bp-challenging">Challenging %</label><input class="input" id="bp-challenging" type="number" min="0" max="100" value="20" inputmode="numeric"></div>
+          </div>
+          <p class="hint" id="bp-hint"></p>
+          <div class="label">Mistake patterns the wrong options should reveal (optional)</div>
+          <div id="bp-tags"></div>
+          <label for="bp-notes">Extra notes for the AI (optional)</label>
+          <textarea class="input input--area" id="bp-notes" maxlength="400" placeholder="e.g. follow the order of the book exercises"></textarea>
+          <label for="bp-out">Your prompt</label>
+          <textarea class="input input--area promptbox" id="bp-out" readonly></textarea>
+          <button class="btn btn--small" id="bp-copy" type="button">Copy prompt</button>
+          <div id="bp-msg" role="alert" hidden></div>
+        </details>
+      </div>
       <div class="card" id="imp-card" hidden>
         <h2>Import questions (CSV)</h2>
         <p class="hint">Choose the CSV file. First press <b>Check file</b> (nothing is saved). If it says “all good”, press <b>Save questions</b>. If even one row has a problem, nothing is saved. You can import the same file again later: the same questionId is updated, not duplicated.</p>
@@ -55,6 +89,8 @@
 <script src="assets/js/shell.js"></script>
 <script src="assets/js/tex.js"></script>
 <script src="assets/js/kit.js"></script>
+<script src="assets/js/prompt-kit.js"></script>
+<script src="assets/js/bank-prompt.js"></script>
 <script src="assets/js/questions.js"></script>
 </body>
 </html>

@@ -109,6 +109,7 @@
 
   Shell.start("questions", false, function (profile) {
     me = profile;
+    $("bp").addEventListener("toggle", function () { if (this.open) BankPrompt.init(); });   /* build 11 */
     if (profile.role === "admin") setupImport(); else $("q-sub").textContent = "The questions for your classes. Only the administrator can import new ones.";
     loadBank();
   });
