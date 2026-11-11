@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Marking — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div id="loading" class="skeleton" aria-label="Loading"></div>
+      <div id="m-wrap" hidden>
+        <div class="card">
+          <a class="small" href="tests.html">← All tests</a>
+          <h1 id="m-title">Marking</h1>
+          <p class="muted" id="m-sub"></p>
+          <div class="chiprow" id="m-counts"></div>
+          <label class="check"><input type="checkbox" id="m-all"><span>Also show the answers I have already marked (to correct a mark)</span></label>
+          <p class="hint">Give 0 up to the full marks of the question; half marks (0.5) are allowed. A remark is optional and is shown to the student. A student sees the mark only when you save it, and the score of the test is updated at once. Answers you do not mark stay out of the score.</p>
+        </div>
+        <div id="m-flash" role="status" hidden></div>
+        <div id="m-list"></div>
+        <p class="muted" id="m-empty" hidden></p>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/vendor/katex/katex.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/tex.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/marking.js"></script>
+</body>
+</html>

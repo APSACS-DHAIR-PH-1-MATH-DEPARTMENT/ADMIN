@@ -1,11 +1,13 @@
-/* test-new.js (staff) — build 10. The "New test" form: the questions come from CSV files (drag-drop or choose; one file = one test),
+/* test-new.js (staff) — build 13. The "New test" form: the questions come from CSV files (drag-drop or choose; one file = one test),
    pasted CSV text, or are typed by hand — NOT from the question bank. Every file/typed question is checked by the server
    (staff/createCustomTest with save:false) before the test is created. The CSV text is only checked and then forgotten. */
 (function () {
   var $ = UI.$, h = Kit.h, clear = Kit.clear;
   var opts = null, drafts = [], seq = 0, nodes = {}, onCreated = null, busyCreate = false;
   var MAX_FILE = 700000;
-  var TYPE_NAME = { mcq: "Multiple choice", tf: "True / false", fill: "Fill in", order: "Put in order" };
+  var TYPE_NAME = { mcq: "Multiple choice", tf: "True / false", fill: "Fill in", order: "Put in order", short: "Short answer", long: "Long answer" };
+  function isManual(t) { return t === "short" || t === "long"; }
+  function marksOf(q) { var n = parseInt(q.marks, 10); return n >= 1 ? n : 1; }
 
   function classesOf() { var seen = {}, out = []; opts.assignments.forEach(function (k) { var c = parseInt(k, 10); if (!seen[c]) { seen[c] = 1; out.push(c); } }); return out.sort(function (a, b) { return a - b; }); }
   function ticked(name) { return Array.prototype.map.call(document.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; }); }
@@ -44,6 +46,8 @@
   function chips(d) {
     var box = h("div", "chiprow"), c = d.counts; if (!c) return box;
     box.appendChild(h("span", "chip", c.total + " questions"));
+    if (c.totalMarks) box.appendChild(h("span", "chip chip--marks", c.totalMarks + " marks"));
+    if (c.manual) box.appendChild(h("span", "chip chip--pending", c.manual + " checked by you"));
     Object.keys(c.byType || {}).forEach(function (k) { box.appendChild(h("span", "chip", c.byType[k] + " " + (TYPE_NAME[k] || k))); });
     ["easy", "medium", "challenging"].forEach(function (k) { if (c.byDifficulty && c.byDifficulty[k]) box.appendChild(h("span", "chip chip--" + k, c.byDifficulty[k] + " " + Kit.DIFF[k])); });
     return box;
@@ -52,13 +56,14 @@
   function answerText(q) {
     if (q.type === "order") return String(q.answer).split("|").join(" → ");
     if (q.type === "mcq") return q.answer + ". " + (q["option" + q.answer] || "");
+    if (isManual(q.type)) return "(model answer) " + q.answer;
     return q.answer;
   }
   function questionList(d, box) {
     clear(box);
     d.questions.forEach(function (q, i) {
       var r = h("div", "qprev"), top = h("div", "qprev__top");
-      top.appendChild(h("b", "", "Q" + (i + 1))); top.appendChild(h("span", "chip", TYPE_NAME[q.type] || q.type)); top.appendChild(h("span", "chip chip--" + q.difficulty, Kit.DIFF[q.difficulty] || q.difficulty));
+      top.appendChild(h("b", "", "Q" + (i + 1))); top.appendChild(h("span", "chip", TYPE_NAME[q.type] || q.type)); top.appendChild(h("span", "chip chip--marks", marksOf(q) + (marksOf(q) === 1 ? " mark" : " marks"))); top.appendChild(h("span", "chip chip--" + q.difficulty, Kit.DIFF[q.difficulty] || q.difficulty));
       if (q.topic) top.appendChild(h("span", "small muted", q.topic));
       var rm = h("button", "linkbtn", "Remove"); rm.type = "button"; rm.addEventListener("click", function () { d.questions.splice(i, 1); d.counts = recount(d.questions); render(d); }); top.appendChild(rm);
       r.appendChild(top); r.appendChild(Kit.tex("div", "qtext qtext--sm", q.question)); r.appendChild(h("div", "small", "Answer: " + answerText(q)));
@@ -66,8 +71,8 @@
     });
   }
   function recount(rows) {
-    var c = { total: rows.length, byType: {}, byDifficulty: {}, byTopic: {} };
-    rows.forEach(function (q) { c.byType[q.type] = (c.byType[q.type] || 0) + 1; c.byDifficulty[q.difficulty] = (c.byDifficulty[q.difficulty] || 0) + 1; c.byTopic[q.topic] = (c.byTopic[q.topic] || 0) + 1; });
+    var c = { total: rows.length, totalMarks: 0, manual: 0, byType: {}, byDifficulty: {}, byTopic: {} };
+    rows.forEach(function (q) { c.totalMarks += marksOf(q); if (isManual(q.type)) c.manual++; c.byType[q.type] = (c.byType[q.type] || 0) + 1; c.byDifficulty[q.difficulty] = (c.byDifficulty[q.difficulty] || 0) + 1; c.byTopic[q.topic] = (c.byTopic[q.topic] || 0) + 1; });
     return c;
   }
 
@@ -111,10 +116,11 @@
   }
   function manualForm(d, close) {
     var f = h("div", "editform");
-    var type = select([["mcq", "Multiple choice"], ["tf", "True / false"], ["fill", "Fill in the answer"], ["order", "Put in order"]]);
+    var type = select([["mcq", "Multiple choice"], ["tf", "True / false"], ["fill", "Fill in the answer"], ["order", "Put in order"], ["short", "Short answer (you mark it)"], ["long", "Long answer (you mark it)"]]);
     var diff = select([["easy", "Easy"], ["medium", "Medium"], ["challenging", "Challenging"]]); diff.value = "medium";
     var topic = h("input", "input"); topic.maxLength = 60; topic.value = $("n-topic").value.trim() || $("n-chapter").value.trim(); topic.placeholder = "Topic of this question";
-    var g1 = h("div", "formgrid"); g1.appendChild(field("Kind of question", type)); g1.appendChild(field("Difficulty", diff)); f.appendChild(g1); f.appendChild(field("Topic", topic));
+    var mk = h("input", "input"); mk.type = "number"; mk.min = "1"; mk.max = "20"; mk.value = "1"; mk.setAttribute("inputmode", "numeric");
+    var g1 = h("div", "formgrid"); g1.appendChild(field("Kind of question", type)); g1.appendChild(field("Difficulty", diff)); g1.appendChild(field("Marks (1 to 20)", mk)); f.appendChild(g1); f.appendChild(field("Topic", topic));
     var q = h("textarea", "input input--area"); q.maxLength = 900; q.placeholder = "Write the question. Maths between single dollar signs, e.g. $\\frac{3}{4}$"; f.appendChild(field("Question", q));
 
     var mc = h("div"); mc.appendChild(h("div", "label", "Options — tick the correct one; for wrong options you may pick the mistake it shows"));
@@ -128,21 +134,24 @@
     var fillBox = h("div"), fa = h("input", "input"); fa.maxLength = 200; var fx = h("input", "input"); fx.maxLength = 300; fx.placeholder = "e.g. 5.0|5.00";
     fillBox.appendChild(field("Correct answer", fa)); fillBox.appendChild(field("Other accepted answers (optional, separate with |)", fx));
     var ordBox = h("div"), oi = h("textarea", "input input--area"); oi.placeholder = "One value per line, in the CORRECT order. Students will see them shuffled."; ordBox.appendChild(field("Items in the correct order", oi));
-    f.appendChild(mc); f.appendChild(tfBox); f.appendChild(fillBox); f.appendChild(ordBox);
-    function swap() { mc.hidden = type.value !== "mcq"; tfBox.hidden = type.value !== "tf"; fillBox.hidden = type.value !== "fill"; ordBox.hidden = type.value !== "order"; }
+    var wrBox = h("div"), wa = h("textarea", "input input--area"); wa.maxLength = 800; wa.placeholder = "The model answer: final result and the marking points, e.g. Step 1 … (1) Step 2 … (1) Answer … (1)"; wrBox.appendChild(field("Model answer / marking points (only you see this until the answer is marked)", wa));
+    f.appendChild(mc); f.appendChild(tfBox); f.appendChild(fillBox); f.appendChild(ordBox); f.appendChild(wrBox);
+    var defaultMarks = { short: "3", long: "5" };
+    function swap() { mc.hidden = type.value !== "mcq"; tfBox.hidden = type.value !== "tf"; fillBox.hidden = type.value !== "fill"; ordBox.hidden = type.value !== "order"; wrBox.hidden = !isManual(type.value); if (isManual(type.value) && mk.value === "1") mk.value = defaultMarks[type.value]; else if (!isManual(type.value) && (mk.value === "3" || mk.value === "5")) mk.value = "1"; }
     type.addEventListener("change", swap); swap();
-    var ex = h("textarea", "input input--area"); ex.maxLength = 600; ex.placeholder = "Why is this the answer? (shown to the student after the test)"; f.appendChild(field("Explanation (required)", ex));
+    var ex = h("textarea", "input input--area"); ex.maxLength = 600; ex.placeholder = "Why is this the answer? (shown to the student after the test)"; f.appendChild(field("Explanation / worked solution (required)", ex));
     var msg = h("div"); msg.setAttribute("role", "alert"); msg.hidden = true; f.appendChild(msg);
     var acts = h("div", "actions"), add = h("button", "btn btn--small", "Add question"), cancel = h("button", "btn btn--small btn--ghost", "Cancel"); add.type = "button"; cancel.type = "button";
     acts.appendChild(add); acts.appendChild(cancel); f.appendChild(acts);
     cancel.addEventListener("click", close);
     add.addEventListener("click", function () {
       UI.clear(msg);
-      var rec = { type: type.value, difficulty: diff.value, topic: topic.value.trim(), question: q.value.trim(), explanation: ex.value.trim() };
+      var rec = { type: type.value, difficulty: diff.value, topic: topic.value.trim(), question: q.value.trim(), explanation: ex.value.trim(), marks: String(parseInt(mk.value, 10) || 1) };
       if (rec.type === "mcq") {
         var ans = "A"; ["A", "B", "C", "D"].forEach(function (L) { if (radios[L].checked) ans = L; });
         rec.answer = ans; ["A", "B", "C", "D"].forEach(function (L) { rec["option" + L] = optIn[L].value.trim(); rec["err" + L] = (L !== ans && optIn[L].value.trim()) ? optTag[L].value : ""; });
       } else if (rec.type === "tf") rec.answer = tf.value;
+      else if (isManual(rec.type)) rec.answer = wa.value.trim();
       else if (rec.type === "fill") { rec.answer = fa.value.trim(); rec.acceptedAnswers = fx.value.trim(); }
       else { var lines = oi.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean); rec.answer = lines.join("|"); rec.items = shuffle(lines).join("|"); }
       var b = formBase(), n = d.questions.length, p = { save: false, classLevel: b.classLevel, questions: d.questions.concat([rec]) }; if (b.chapter) p.chapter = b.chapter; if (b.topic) p.topic = b.topic;

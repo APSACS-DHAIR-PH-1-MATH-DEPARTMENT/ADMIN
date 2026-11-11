@@ -372,3 +372,22 @@ body.lightbox-open { overflow: hidden; }
 .taggroup { margin: 8px 0 12px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
 .taggroup__h { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; }
 .taggroup .checks { margin: 4px 0 2px; }
+
+/* ---------- Step 4b: marks and written answers ---------- */
+.ans--pending { border-left-color: var(--info); }
+.ans--partial { border-left-color: var(--gold); }
+.ans--pending .ans__s { color: var(--info); }
+.ans--partial .ans__s { color: #6b5200; }
+.ans__written { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ans__student { margin: 6px 0 10px; padding: 10px 12px; background: var(--bg, #f6f8f6); border: 1px solid var(--line); border-radius: 8px; }
+.ans__remark { margin-top: 8px; padding: 8px 10px; background: var(--gold-soft); color: #4a3a00; border-radius: 8px; overflow-wrap: anywhere; }
+.chip--marks { background: var(--gold-soft); color: #6b5200; }
+.chip--pending { background: var(--info-bg); color: var(--info); }
+.markq { margin-bottom: 14px; }
+.markq .ans { margin-top: 12px; }
+.mark--done { border-left-color: var(--ok); }
+.mark--wait { border-left-color: var(--info); }
+.markrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0; }
+.markrow label { margin: 0; font-weight: 700; }
+.input--marks { width: 90px; text-align: center; }
+.markquick { display: flex; gap: 6px; }

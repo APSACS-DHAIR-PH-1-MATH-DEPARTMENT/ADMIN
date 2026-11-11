@@ -1,4 +1,4 @@
-/* tests.js (staff) — build 10. List of diagnostic tests: results, availability (make unavailable / available again for N minutes,
+/* tests.js (staff) — build 13. List of diagnostic tests: results, availability (make unavailable / available again for N minutes,
    hours or days), edit details, questions, and (administrator) archive / restore. The "New test" form lives in test-new.js. */
 (function () {
   var $ = UI.$, h = Kit.h, clear = Kit.clear;
@@ -68,6 +68,7 @@
     [t.questionCount + " questions", "⏱ " + t.timeLimitMin + " min", t.maxAttempts + (t.maxAttempts === 1 ? " attempt" : " attempts"), t.resultVisibility === "afterClose" ? "Result after closing" : "Result at once", t.source === "custom" ? "Own questions" : "Question bank"].forEach(function (x) { meta.appendChild(h("span", "chip", x)); });
     c.appendChild(meta);
     c.appendChild(h("p", "small", "Submitted " + t.submitted + " of " + t.students + " students" + (t.started > t.submitted ? " · " + (t.started - t.submitted) + " still working or timed out" : "")));
+    if (t.pendingMarking) c.appendChild(h("p", "small", "⏳ " + t.pendingMarking + " written answer" + (t.pendingMarking === 1 ? "" : "s") + " waiting for marks"));
     var when = [];
     if (t.opensAt) when.push("Opens " + DT.format(t.opensAt)); if (t.closesAt) when.push("Closes " + DT.format(t.closesAt));
     if (t.status === "published" && t.window && WINDOW[t.window]) when.push(WINDOW[t.window]);
@@ -78,6 +79,7 @@
     function reload(text) { flash(text, "ok"); load(); }
     if (t.status !== "archived") {
       var rep = h("a", "btn btn--small", "Results & diagnosis"); rep.href = "report.html?id=" + encodeURIComponent(t.assessmentId); actions.appendChild(rep);
+      if (t.pendingMarking) { var mk = h("a", "btn btn--small btn--gold", "Mark written answers (" + t.pendingMarking + ")"); mk.href = "marking.html?id=" + encodeURIComponent(t.assessmentId); actions.appendChild(mk); }
     }
     if (t.canManage && t.status !== "archived") {
       var panel = null;
