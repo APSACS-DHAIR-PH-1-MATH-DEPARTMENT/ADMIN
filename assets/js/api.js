@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/listQuestions": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -76,6 +76,10 @@
       resendApproval: function (studentId) { return authed("staff/resendApproval", { studentId: studentId }); },
       updateStudent: function (studentId, fields) { var p = { studentId: studentId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateStudent", p); },
       resetStudentPin: function (studentId) { return authed("staff/resetStudentPin", { studentId: studentId }); },
+      archiveStudent: function (studentId) { return authed("staff/archiveStudent", { studentId: studentId }); },
+      restoreStudent: function (studentId) { return authed("staff/restoreStudent", { studentId: studentId }); },
+      deleteStudent: function (studentId, confirmId, password) { return authed("staff/deleteStudent", { studentId: studentId, confirmId: confirmId, password: password }); },
+      auditLog: function (filters) { return authed("staff/auditLog", filters || {}); },
       listTeachers: function () { return authed("staff/listTeachers"); },
       createTeacher: function (fullName, email, assignments) { return authed("staff/createTeacher", { fullName: fullName, email: email, assignments: assignments }); },
       updateTeacher: function (teacherId, fields) { var p = { teacherId: teacherId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateTeacher", p); },

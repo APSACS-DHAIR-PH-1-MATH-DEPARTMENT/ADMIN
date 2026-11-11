@@ -10,6 +10,7 @@
     { id: "students",  label: "All students", icon: "cap", href: "students.html", ready: true, adminOnly: true },
     { id: "teachers",  label: "Teachers", icon: "users", href: "teachers.html",  ready: true, adminOnly: true },
     { id: "feedback",  label: "Feedback", icon: "chat", href: "feedback.html",  ready: true, adminOnly: true },
+    { id: "activity",  label: "Activity", icon: "clipboard", href: "activity.html", ready: true, adminOnly: true },
     { id: "remarks",   label: "Remarks",  icon: "note", href: "remarks.html",   ready: false }
   ];
   var activeTab = "";
@@ -82,7 +83,7 @@
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
      cryptic red errors on every page. The health call is public and costs one request. */
-  var REQUIRED_BUILD = 8;
+  var REQUIRED_BUILD = 9;
   function checkBackend(p) {
     try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
     Api.health().then(function (r) {

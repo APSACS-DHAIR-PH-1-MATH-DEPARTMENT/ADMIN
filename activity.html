@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Activity — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h2>Activity log</h2>
+        <p class="muted small">Who changed what, and when. Newest first. Times are Pakistan time. Passwords, codes and long texts are never stored here.</p>
+        <div class="filters--3">
+          <div><label for="f-action">What was done</label><input class="input" id="f-action" type="search" placeholder="e.g. archive, delete, createTeacher" autocomplete="off"></div>
+          <div><label for="f-target">ID it was done to</label><input class="input" id="f-target" type="search" placeholder="e.g. WHA-STU-0000123" autocomplete="off"></div>
+          <div><label for="f-limit">Show</label><select class="input" id="f-limit"><option value="50">Last 50</option><option value="150" selected>Last 150</option><option value="300">Last 300</option></select></div>
+        </div>
+        <p class="small muted" id="count"></p>
+        <div id="list" class="list"></div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/activity.js"></script>
+</body>
+</html>

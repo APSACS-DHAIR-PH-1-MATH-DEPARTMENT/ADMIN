@@ -11,7 +11,8 @@
     Object.keys(f).forEach(function (k) { if (!f[k]) delete f[k]; });
     Api.staff.listStudents(f).then(function (r) {
       if (n !== requestNo) return;   // an older answer arriving late
-      $("count").textContent = r.count + (r.count === 1 ? " student" : " students") + (r.count > r.students.length ? " (showing the first " + r.students.length + ")" : "");
+      $("count").textContent = r.count + (r.count === 1 ? " student" : " students") + (r.count > r.students.length ? " (showing the first " + r.students.length + ")" : "") +
+        ($("f-status").value === "archived" ? ". These students are hidden from teachers and cannot log in. Restore them, or delete them permanently." : "");
       StudentCards.render($("list"), r.students, {
         isAdmin: me.role === "admin", classes: ctxBase.classes, sections: ctxBase.sections, say: say, changed: load
       });
@@ -26,7 +27,7 @@
       $("f-section").innerHTML += ctxBase.sections.map(function (c) { return '<option value="' + UI.esc(c) + '">Section ' + UI.esc(c) + "</option>"; }).join("");
       ["f-status", "f-class", "f-section"].forEach(function (id) { $(id).addEventListener("change", load); });
       $("f-q").addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(load, 300); });
-      var wanted = (location.search.match(/[?&]status=(pending|active|suspended)/) || [])[1];
+      var wanted = (location.search.match(/[?&]status=(pending|active|suspended|archived)/) || [])[1];
       if (wanted) $("f-status").value = wanted;
       load();
     }).catch(function (e) { UI.say($("page-msg"), e.message, "bad"); });
