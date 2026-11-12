@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Remarks &amp; copy check — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h1>Remarks &amp; copy check</h1>
+        <p class="muted">Record on one page who showed the copy and who did not, and write remarks about students. You choose for each entry whether the student sees it and whether it is to be told to the parent (the parent weekly report comes later). Students see only what you tick “Show to the student”.</p>
+        <div class="chiprow" id="tabs" role="group" aria-label="What do you want to do?"></div>
+      </div>
+      <div id="flash" role="status" hidden></div>
+
+      <section id="tab-copy" hidden>
+        <div class="card">
+          <h2>Copy check for a class</h2>
+          <div class="formgrid">
+            <div><label for="cc-class">Class and section</label><select class="input" id="cc-class"></select></div>
+            <div><label for="cc-date">Date of the check <span class="muted">(Pakistan time)</span></label><input class="input" id="cc-date" type="date"></div>
+          </div>
+          <p class="hint">Set each student to what you saw. Students left on “— not checked —” are skipped. Adding the same status for the same student and day twice does nothing, so a double tap is safe.</p>
+          <div class="actions"><button class="btn btn--small btn--ghost" id="cc-allok" type="button">Set everyone to “copy checked”</button><button class="btn btn--small btn--ghost" id="cc-clear" type="button">Clear all</button></div>
+        </div>
+        <div id="cc-list" class="list"></div>
+        <p class="muted" id="cc-empty" hidden>There are no students in this class yet.</p>
+        <div class="card" id="cc-foot" hidden>
+          <div id="cc-msg" role="alert" hidden></div>
+          <button class="btn" id="cc-save" type="button">Save the copy check</button>
+          <p class="small muted" id="cc-count"></p>
+        </div>
+      </section>
+
+      <section id="tab-note" hidden>
+        <form class="card" id="nt-form" novalidate>
+          <h2>Write a remark</h2>
+          <div class="formgrid">
+            <div><label for="nt-class">Class and section</label><select class="input" id="nt-class"></select></div>
+            <div><label for="nt-student">Student</label><select class="input" id="nt-student"></select></div>
+          </div>
+          <label for="nt-date">Date <span class="muted">(Pakistan time)</span></label>
+          <input class="input" id="nt-date" type="date">
+          <label for="nt-text">Remark</label>
+          <textarea class="input input--area" id="nt-text" maxlength="500" rows="4" placeholder="e.g. Very polite and helpful in class. Needs to practise tables."></textarea>
+          <label class="check"><input type="checkbox" id="nt-show"><span>Show to the student</span></label>
+          <label class="check"><input type="checkbox" id="nt-parent"><span>Tell the parent (in the weekly report, later)</span></label>
+          <div id="nt-msg" role="alert" hidden></div>
+          <button class="btn" id="nt-save" type="submit">Save the remark</button>
+        </form>
+      </section>
+
+      <section id="tab-hist" hidden>
+        <div class="card">
+          <h2>History</h2>
+          <div class="formgrid">
+            <div><label for="hs-class">Class and section</label><select class="input" id="hs-class"></select></div>
+            <div><label for="hs-kind">Type</label><select class="input" id="hs-kind"><option value="">Copy checks and remarks</option><option value="copy">Copy checks only</option><option value="note">Remarks only</option></select></div>
+            <div><label for="hs-from">From</label><input class="input" id="hs-from" type="date"></div>
+            <div><label for="hs-to">To</label><input class="input" id="hs-to" type="date"></div>
+          </div>
+          <p class="small muted" id="hs-student" hidden></p>
+          <label class="check" id="hs-void-l" hidden><input type="checkbox" id="hs-void"><span>Also show voided entries</span></label>
+          <button class="btn btn--small" id="hs-go" type="button">Show</button>
+        </div>
+        <div id="hs-list" class="list"></div>
+        <p class="muted" id="hs-empty" hidden>Nothing found for these filters.</p>
+      </section>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/remarks.js"></script>
+</body>
+</html>

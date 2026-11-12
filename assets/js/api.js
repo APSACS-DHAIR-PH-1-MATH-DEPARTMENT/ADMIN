@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1, "staff/listRequests": 1, "staff/questionLookup": 1, "staff/flaggedQuestions": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1, "staff/listRequests": 1, "staff/questionLookup": 1, "staff/flaggedQuestions": 1, "staff/listPractice": 1, "staff/listExercises": 1, "staff/listRemarks": 1, "staff/overviewList": 1, "staff/studentReport": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -121,7 +121,21 @@
       respondRequest: function (requestId, response, responseLink, changes) { var p = { requestId: requestId, response: response, responseLink: responseLink || "" }; if (changes && changes.length) p.changes = changes; return authed("staff/respondRequest", p); },
       adjustAnswers: function (assessmentId, attemptId, changes) { return authed("staff/adjustAnswers", { assessmentId: assessmentId, attemptId: attemptId, changes: changes }); },
       questionLookup: function (questionId) { return authed("staff/questionLookup", { questionId: questionId }); },
-      flaggedQuestions: function () { return authed("staff/flaggedQuestions"); }
+      flaggedQuestions: function () { return authed("staff/flaggedQuestions"); },
+      /* builds 15-17: practice + exercises content, remarks / copy checking, overview + student report */
+      importPractice: function (classLevel, csv, save) { return authed("staff/importPractice", { classLevel: classLevel, csv: csv, save: save === true }); },
+      listPractice: function (classLevel, chapterRef) { var p = { classLevel: classLevel }; if (chapterRef) p.chapterRef = chapterRef; return authed("staff/listPractice", p); },
+      setPracticeActive: function (questionId, active) { return authed("staff/setPracticeActive", { questionId: questionId, active: active === true }); },
+      importExercises: function (classLevel, csv, save) { return authed("staff/importExercises", { classLevel: classLevel, csv: csv, save: save === true }); },
+      listExercises: function (classLevel, chapterRef, collectionType, collectionName) { var p = { classLevel: classLevel }; if (chapterRef) { p.chapterRef = chapterRef; p.collectionType = collectionType || ""; p.collectionName = collectionName || ""; } return authed("staff/listExercises", p); },
+      setExerciseVideo: function (exerciseQuestionId, videoUrl) { return authed("staff/setExerciseVideo", { exerciseQuestionId: exerciseQuestionId, videoUrl: videoUrl || "" }); },
+      setExerciseActive: function (exerciseQuestionId, active) { return authed("staff/setExerciseActive", { exerciseQuestionId: exerciseQuestionId, active: active === true }); },
+      listRemarks: function (filters) { return authed("staff/listRemarks", filters || {}); },
+      addRemarks: function (kind, date, items) { return authed("staff/addRemarks", { kind: kind, date: date, items: items }); },
+      updateRemark: function (remarkId, fields) { var p = { remarkId: remarkId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateRemark", p); },
+      setRemarkActive: function (remarkId, active) { return authed("staff/setRemarkActive", { remarkId: remarkId, active: active === true }); },
+      overviewList: function (filters) { return authed("staff/overviewList", filters || {}); },
+      studentReport: function (studentId, from, to) { var p = { studentId: studentId }; if (from) p.from = from; if (to) p.to = to; return authed("staff/studentReport", p); }
     }
   };
 })();

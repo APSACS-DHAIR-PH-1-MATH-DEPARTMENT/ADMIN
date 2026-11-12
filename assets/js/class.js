@@ -20,7 +20,8 @@
       '<div class="actions">' +
       '<a class="btn btn--small" href="' + UI.esc(link) + '#issues">Disciplinary issues' + (n ? " (" + n + ")" : "") + "</a>" +
       '<a class="btn btn--small btn--ghost" href="' + UI.esc(link) + '#add-issue">+ Add issue</a>' +
-      '<button class="btn btn--small btn--ghost" type="button" disabled title="Coming in a later update">Revision remarks · soon</button>' +
+      '<a class="btn btn--small btn--ghost" href="remarks.html?student=' + encodeURIComponent(s.studentId) + '">Remarks</a>' +
+      '<a class="btn btn--small btn--ghost" href="student-report.html?id=' + encodeURIComponent(s.studentId) + '">Report</a>' +
       "</div></article>";
   }
 
@@ -34,6 +35,8 @@
   Shell.start("classes", false, function () {
     if (!cls || !sec) { location.replace("classes.html"); return; }
     $("class-title").textContent = "Class " + cls + sec;
+    if ($("go-copy")) $("go-copy").href = "remarks.html?c=" + cls + "&s=" + encodeURIComponent(sec);
+    if ($("go-over")) $("go-over").href = "overview.html?c=" + cls + "&s=" + encodeURIComponent(sec);
     document.title = "Class " + cls + sec + " — Staff Portal";
     Api.staff.listStudents({ classLevel: cls, section: sec }).then(function (r) {
       all = r.students;

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Practice &amp; exercises — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h1>Practice &amp; exercises</h1>
+        <p class="muted">The content students see under <b>Practice</b> (extra questions with hint + solution, not marked) and <b>Exercises</b> (textbook exercises and worksheets with a written solution and, where you have one, a YouTube video). Add questions with a CSV file, then check them here. Nothing is saved until you press Save.</p>
+        <div class="chiprow" id="kind-tabs" role="group" aria-label="What are you working on?"></div>
+      </div>
+      <div id="flash" role="status" hidden></div>
+
+      <form class="card" id="imp-form" novalidate>
+        <h2 id="imp-title">Add questions</h2>
+        <label for="imp-class">For which class?</label>
+        <select class="input" id="imp-class"></select>
+        <p class="hint">The class is chosen here, never inside the file. Students of that class (all sections) will see the questions.</p>
+        <label for="imp-file">CSV file</label>
+        <input class="input" id="imp-file" type="file" accept=".csv,.txt,text/csv,text/plain">
+        <label for="imp-text">…or paste the CSV text here</label>
+        <textarea class="input input--area" id="imp-text" rows="6" spellcheck="false" placeholder="chapter,topic,difficulty,type,question,…"></textarea>
+        <div class="actions">
+          <button class="btn btn--small" id="imp-check" type="submit">Check the file</button>
+          <button class="btn btn--small btn--gold" id="imp-save" type="button" disabled>Save these questions</button>
+        </div>
+        <div id="imp-msg" role="alert" hidden></div>
+        <div id="imp-out"></div>
+        <details class="prompt-box">
+          <summary>Make the CSV with an AI (copy-ready prompt)</summary>
+          <p class="hint" id="pr-hint"></p>
+          <div class="formgrid">
+            <div><label for="pr-chapter">Chapter</label><input class="input" id="pr-chapter" maxlength="80" placeholder="e.g. Decimals"></div>
+            <div><label for="pr-topic" id="pr-topic-l">Topic(s)</label><input class="input" id="pr-topic" maxlength="120" placeholder="e.g. Adding and subtracting decimals"></div>
+            <div><label for="pr-count" id="pr-count-l">How many questions?</label><input class="input" id="pr-count" type="number" min="5" max="60" value="20"></div>
+          </div>
+          <label for="pr-extra">Anything else for the AI? (optional)</label>
+          <input class="input" id="pr-extra" maxlength="200" placeholder="e.g. Use Pakistani examples, rupees">
+          <label for="pr-out">The prompt (give the book PDF/photos to the AI together with it)</label>
+          <textarea class="input input--area" id="pr-out" rows="10" readonly></textarea>
+          <button class="btn btn--small btn--ghost" id="pr-copy" type="button">Copy the prompt</button>
+        </details>
+      </form>
+
+      <div class="card">
+        <h2>What is already added</h2>
+        <label for="br-class">Class</label>
+        <select class="input" id="br-class"></select>
+        <div id="br-chapters" class="list"></div>
+        <p class="muted" id="br-empty" hidden>Nothing added for this class yet.</p>
+      </div>
+      <div class="card" id="br-detail" hidden>
+        <h2 id="br-title"></h2>
+        <p class="small muted" id="br-sub"></p>
+        <div id="br-list" class="list"></div>
+        <button class="btn btn--small btn--ghost" id="br-close" type="button">Close the list</button>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/vendor/katex/katex.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/tex.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/prompt-kit.js"></script>
+<script src="assets/js/content-prompt.js"></script>
+<script src="assets/js/content.js"></script>
+</body>
+</html>

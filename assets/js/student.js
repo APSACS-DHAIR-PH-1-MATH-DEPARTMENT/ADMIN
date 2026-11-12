@@ -12,6 +12,8 @@
       $("st-name").textContent = UI.name(s.studentName);
       $("st-sub").textContent = "Class " + s.classLevel + s.section + " · Father: " + UI.name(s.fatherName) + " · " + s.studentId;
       document.title = UI.name(s.studentName) + " — Staff Portal";
+      $("go-remarks").href = "remarks.html?student=" + encodeURIComponent(s.studentId);
+      $("go-report").href = "student-report.html?id=" + encodeURIComponent(s.studentId);
       $("back-link").href = "class.html?c=" + s.classLevel + "&s=" + encodeURIComponent(s.section || "");
       $("back-link").textContent = "← Class " + s.classLevel + s.section;
       var open = r.issues.filter(function (i) { return i.status === "open"; }).length;

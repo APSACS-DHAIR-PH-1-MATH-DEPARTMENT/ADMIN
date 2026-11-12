@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Student report — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card noprint">
+        <p class="small"><a id="back-link" href="overview.html">← Overview</a></p>
+        <h1>Student report</h1>
+        <div class="formgrid">
+          <div><label for="rp-from">From <span class="muted">(optional)</span></label><input class="input" id="rp-from" type="date"></div>
+          <div><label for="rp-to">To <span class="muted">(optional)</span></label><input class="input" id="rp-to" type="date"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="rp-share"><span>Print version for the student / parent: show only remarks marked “Show to the student” or “Tell the parent”</span></label>
+        <div class="actions">
+          <button class="btn btn--small" id="rp-go" type="button">Show the report</button>
+          <button class="btn btn--small btn--gold" id="rp-print" type="button" disabled>Download PDF</button>
+        </div>
+        <p class="hint">“Download PDF” opens your printer window: choose <b>Save as PDF</b> as the destination.</p>
+      </div>
+      <div id="loading" class="skeleton noprint" aria-label="Loading"></div>
+      <div id="report" class="report" hidden></div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/student-report.js"></script>
+</body>
+</html>

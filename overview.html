@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Overview — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h1>Student overview</h1>
+        <p class="muted">One card per student: average score, weakest topic, copy checks and open issues or requests. “Needs support” means a low average or a weak topic that repeats. Open a card for the full report.</p>
+        <div class="formgrid">
+          <div><label for="ov-class">Class and section</label><select class="input" id="ov-class"></select></div>
+          <div><label for="ov-sort">Sort by</label><select class="input" id="ov-sort"><option value="support">Needs support first</option><option value="score">Lowest average first</option><option value="name">Name</option></select></div>
+        </div>
+        <label for="ov-q">Search</label>
+        <input class="input" id="ov-q" type="search" placeholder="Name, father or Student ID" autocomplete="off">
+        <p class="small muted" id="ov-count"></p>
+      </div>
+      <div id="loading" class="skeleton" aria-label="Loading"></div>
+      <div id="ov-list" class="cardgrid"></div>
+      <p class="muted" id="ov-empty" hidden>No students found.</p>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/overview.js"></script>
+</body>
+</html>
