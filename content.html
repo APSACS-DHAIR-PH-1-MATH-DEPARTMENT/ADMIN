@@ -25,24 +25,30 @@
         <h1>Practice &amp; exercises</h1>
         <p class="muted">The content students see under <b>Practice</b> (extra questions with hint + solution, not marked) and <b>Exercises</b> (textbook exercises and worksheets with a written solution and, where you have one, a YouTube video). Add questions with a CSV file, then check them here. Nothing is saved until you press Save.</p>
         <div class="chiprow" id="kind-tabs" role="group" aria-label="What are you working on?"></div>
+        <p class="hint">These two buttons choose the list shown under “What is already added” and the AI prompt. CSV files are recognised by themselves (practice or exercises), so you can add both kinds together.</p>
       </div>
       <div id="flash" role="status" hidden></div>
 
       <form class="card" id="imp-form" novalidate>
-        <h2 id="imp-title">Add questions</h2>
+        <h2 id="imp-title">Add questions from CSV files</h2>
         <label for="imp-class">For which class?</label>
         <select class="input" id="imp-class"></select>
-        <p class="hint">The class is chosen here, never inside the file. Students of that class (all sections) will see the questions.</p>
-        <label for="imp-file">CSV file</label>
-        <input class="input" id="imp-file" type="file" accept=".csv,.txt,text/csv,text/plain">
+        <p class="hint">The class is chosen here, never inside the file. Students of that class (all sections) will see the questions. All files in the list below go to this class.</p>
+        <label for="imp-file">CSV files</label>
+        <div class="dropzone" id="imp-drop" tabindex="0" role="button" aria-label="Choose CSV files, or drop them here">
+          <b>Drop CSV files here</b>
+          <span>or click to choose. Pick many files at once (up to 20). Practice and exercise files can be mixed.</span>
+        </div>
+        <input id="imp-file" type="file" multiple accept=".csv,.txt,text/csv,text/plain" hidden>
+        <div id="imp-files" class="list" aria-live="polite"></div>
         <label for="imp-text">…or paste the CSV text here</label>
-        <textarea class="input input--area" id="imp-text" rows="6" spellcheck="false" placeholder="chapter,topic,difficulty,type,question,…"></textarea>
+        <textarea class="input input--area" id="imp-text" rows="5" spellcheck="false" placeholder="Paste a practice or an exercises CSV here. The first row holds the column names."></textarea>
         <div class="actions">
-          <button class="btn btn--small" id="imp-check" type="submit">Check the file</button>
-          <button class="btn btn--small btn--gold" id="imp-save" type="button" disabled>Save these questions</button>
+          <button class="btn btn--small" id="imp-check" type="submit">Check the pasted text</button>
+          <button class="btn btn--small btn--gold" id="imp-save" type="button" disabled>Save the good files</button>
+          <button class="btn btn--small btn--ghost" id="imp-clear" type="button" hidden>Clear the list</button>
         </div>
         <div id="imp-msg" role="alert" hidden></div>
-        <div id="imp-out"></div>
         <details class="prompt-box">
           <summary>Make the CSV with an AI (copy-ready prompt)</summary>
           <p class="hint" id="pr-hint"></p>

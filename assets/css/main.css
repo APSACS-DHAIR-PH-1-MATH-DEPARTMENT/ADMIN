@@ -436,3 +436,16 @@ body.lightbox-open { overflow: hidden; }
   .print-only { display: block; }
   a { color: inherit; text-decoration: none; }
 }
+
+/* Practice & exercises: drop zone and the list of files waiting to be saved */
+.dropzone { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 22px 14px; margin: 6px 0 10px; border: 2px dashed var(--green); border-radius: 14px; background: var(--green-soft); color: var(--green); cursor: pointer; }
+.dropzone span { font-size: .88rem; color: var(--muted); }
+.dropzone:hover, .dropzone:focus-visible { background: #d6ead9; outline: 3px solid rgba(20, 83, 45, .25); }
+.dropzone.is-over { background: #d6ead9; border-style: solid; outline: 3px solid rgba(20, 83, 45, .35); }
+.fileitem { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: #fff; }
+.fileitem--ok, .fileitem--saved { border-color: var(--green); }
+.fileitem--bad, .fileitem--error { border-color: var(--bad); }
+.fileitem > * + * { margin-top: 8px; }
+.fileitem__top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.fileitem__name { font-weight: 700; word-break: break-all; margin-right: auto; }
+.fileitem__top .chip { margin-right: 0; }
