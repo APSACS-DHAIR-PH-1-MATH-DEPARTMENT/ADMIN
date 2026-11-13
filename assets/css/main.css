@@ -220,6 +220,12 @@ a.side__item:hover { background: rgba(255, 255, 255, .12); }
 .delform label { font-weight: 600; }
 .editform { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
 .editform label { font-weight: 600; }
+.suspendform { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--bad); }
+.suspendform label { font-weight: 600; }
+.phoneform { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.phoneform label { font-weight: 600; }
+.blockinfo { margin: 8px 0; font-size: .9rem; }
+.phone--missing { color: var(--bad); font-weight: 700; }
 .checks { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 6px 0 14px; }
 .check--inline { margin: 0; align-items: center; }
 

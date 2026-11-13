@@ -72,7 +72,9 @@
       listStudents: function (filters) { return authed("staff/listStudents", filters || {}); },
       approveStudent: function (studentId) { return authed("staff/approveStudent", { studentId: studentId }); },
       approveAllPending: function (classLevel) { return authed("staff/approveAllPending", classLevel ? { classLevel: classLevel } : {}); },
-      setStudentStatus: function (studentId, status) { return authed("staff/setStudentStatus", { studentId: studentId, status: status }); },
+      // extra (only when suspending): { blockType: "temporary" | "permanent", reason, blockUntil: "YYYY-MM-DD" (temporary only) }
+      setStudentStatus: function (studentId, status, extra) { var p = { studentId: studentId, status: status }; Object.keys(extra || {}).forEach(function (k) { p[k] = extra[k]; }); return authed("staff/setStudentStatus", p); },
+      setParentPhone: function (studentId, parentPhone) { return authed("staff/setParentPhone", { studentId: studentId, parentPhone: parentPhone }); },
       resendApproval: function (studentId) { return authed("staff/resendApproval", { studentId: studentId }); },
       updateStudent: function (studentId, fields) { var p = { studentId: studentId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateStudent", p); },
       resetStudentPin: function (studentId) { return authed("staff/resetStudentPin", { studentId: studentId }); },

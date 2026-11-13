@@ -8,6 +8,40 @@
     return list.map(function (v) { return '<option value="' + UI.esc(v) + '"' + (String(v) === String(selected) ? " selected" : "") + ">" + UI.esc((prefix || "") + v) + "</option>"; }).join("");
   }
 
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  // Pakistan "today" as YYYY-MM-DD (Pakistan is UTC+5 all year); the backend counts the block dates in Pakistan time too.
+  function pktDay(plusDays) { return new Date(Date.now() + 5 * 3600 * 1000 + (plusDays || 0) * 86400000).toISOString().slice(0, 10); }
+  function dayText(ymd) {   // "2026-11-20" -> "20 Nov 2026"
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(ymd || ""));
+    return m ? Number(m[3]) + " " + MONTHS[Number(m[2]) - 1] + " " + m[1] : String(ymd || "");
+  }
+  // Same rule as the backend (ParentContact.gs): a Pakistan mobile number, typed any usual way. Stored as +923001234567.
+  function phoneOk(value) {
+    var v = String(value || "").trim();
+    if (!/^\+?[\d\s\-()]+$/.test(v)) return false;
+    var d = v.replace(/[^\d]/g, "");
+    if (d.indexOf("0092") === 0) d = d.substring(4);
+    else if (d.length === 12 && d.indexOf("92") === 0) d = d.substring(2);
+    else if (d.length === 11 && d.charAt(0) === "0") d = d.substring(1);
+    return /^3\d{9}$/.test(d);
+  }
+  function phoneShown(p) {   // "+923001234567" -> "+92 300 1234567"
+    var m = /^\+92(3\d\d)(\d{7})$/.exec(String(p || ""));
+    return m ? "+92 " + m[1] + " " + m[2] : String(p || "");
+  }
+  function phoneInput(p) {   // "+923001234567" -> "0300 1234567" (what a person types)
+    var m = /^\+92(3\d\d)(\d{7})$/.exec(String(p || ""));
+    return m ? "0" + m[1] + " " + m[2] : String(p || "");
+  }
+  function blockLine(s) {
+    if (s.status !== "suspended") return "";
+    var why = s.blockReason ? " Reason: " + s.blockReason : " No reason was saved.";
+    var head = s.blockType === "temporary" && s.blockUntil ? "Suspended until " + dayText(s.blockUntil) + " (the student can log in again on that day)."
+      : s.blockType === "temporary" ? "Suspended (temporary)." : "Suspended with no end date.";
+    return '<div class="notice notice--bad blockinfo">' + UI.esc(head + why) + "</div>";
+  }
+
   function cardHtml(s, ctx) {
     var admin = ctx.isAdmin, acts = "", archived = s.status === "archived";
     if (!archived) acts += '<a class="btn btn--small btn--ghost" href="student.html?id=' + encodeURIComponent(s.studentId) + '&c=' + encodeURIComponent(s.classLevel) + '&s=' + encodeURIComponent(s.section || "") + '#issues">Issues' + (s.issueCount ? " (" + s.issueCount + ")" : "") + "</a>";
@@ -18,17 +52,29 @@
       if (s.status === "pending") acts += '<button class="btn btn--small" data-act="approve" type="button">Approve</button>';
       if (s.status === "active") acts += '<button class="btn btn--small btn--ghost" data-act="resend" type="button">Send ID email again</button>' +
         '<button class="btn btn--small btn--ghost" data-act="resetpin" type="button">Reset password</button>' +
-        '<button class="btn btn--small btn--danger" data-act="suspend" type="button">Suspend</button>';
+        '<button class="btn btn--small btn--danger" data-act="suspend" type="button">Suspend…</button>';
       if (s.status === "suspended") acts += '<button class="btn btn--small" data-act="reactivate" type="button">Reactivate</button>';
       acts += '<button class="btn btn--small btn--ghost" data-act="edit" type="button">Edit</button>';
       acts += '<button class="btn btn--small btn--ghost" data-act="archive" type="button">Archive</button>';
     }
+    if (!archived) acts += '<button class="btn btn--small btn--ghost" data-act="phone" type="button">Parent number</button>';
+    var phoneLine = archived ? "" : (s.parentPhone ? "<span>Parent WhatsApp: " + UI.esc(phoneShown(s.parentPhone)) + "</span>" : '<span class="phone--missing">Parent WhatsApp: not added</span>');
     return '<article class="rowcard' + (archived ? " rowcard--archived" : "") + '" data-id="' + UI.esc(s.studentId) + '">' +
       '<div class="rowcard__top"><div><div class="rowcard__name">' + UI.esc(UI.name(s.studentName)) + '</div>' +
       '<div class="small muted">Class ' + UI.esc(s.classLevel) + " · Section " + UI.esc(s.section || "—") + '</div></div>' +
       '<span class="status status--' + UI.esc(s.status) + '">' + UI.esc(STATUS_LABEL[s.status] || s.status) + "</span></div>" +
-      '<div class="rowcard__meta"><span class="idbox">' + UI.esc(s.studentId) + "</span><span>Father: " + UI.esc(UI.name(s.fatherName)) + " (" + UI.esc(s.fatherOccupation) + ")</span><span>" + UI.esc(s.email) + "</span>" + (archived && s.archivedAt ? "<span>Archived " + UI.esc(DT.dateOnly(s.archivedAt)) + "</span>" : "") + "</div>" +
+      '<div class="rowcard__meta"><span class="idbox">' + UI.esc(s.studentId) + "</span><span>Father: " + UI.esc(UI.name(s.fatherName)) + " (" + UI.esc(s.fatherOccupation) + ")</span><span>" + UI.esc(s.email) + "</span>" + phoneLine + (archived && s.archivedAt ? "<span>Archived " + UI.esc(DT.dateOnly(s.archivedAt)) + "</span>" : "") + "</div>" + blockLine(s) +
       (acts ? '<div class="actions">' + acts + "</div>" : "") +
+      (!archived ? ('<form class="phoneform" hidden>' +
+      '<label>Parent WhatsApp number<input class="input" data-p="parentPhone" type="tel" inputmode="tel" value="' + UI.esc(phoneInput(s.parentPhone)) + '" maxlength="20" placeholder="03001234567"></label>' +
+      '<div class="actions"><button class="btn btn--small" data-act="phonesave" type="button">Save number</button><button class="btn btn--small btn--ghost" data-act="phonecancel" type="button">Cancel</button></div>' + "</form>") : "") +
+      (admin && s.status === "active" ? ('<form class="suspendform" hidden>' +
+      '<p class="notice notice--bad">The student is logged out at once. When the student tries to log in, the reason below is shown.</p>' +
+      '<label>Reason (the student will see this)<textarea class="input" data-s="reason" rows="3" maxlength="250"></textarea></label>' +
+      '<div class="checks"><label class="check check--inline"><input type="radio" name="bt-' + UI.esc(s.studentId) + '" data-s="blockType" value="temporary"><span>Temporary</span></label>' +
+      '<label class="check check--inline"><input type="radio" name="bt-' + UI.esc(s.studentId) + '" data-s="blockType" value="permanent"><span>Permanent (no end date)</span></label></div>' +
+      '<label class="untilbox" hidden>The student can log in again on<input class="input" type="date" data-s="blockUntil" min="' + pktDay(1) + '"></label>' +
+      '<div class="actions"><button class="btn btn--small btn--danger" data-act="suspendgo" type="button">Suspend now</button><button class="btn btn--small btn--ghost" data-act="suspendcancel" type="button">Cancel</button></div>' + "</form>") : "") +
       (admin && archived ? ('<form class="delform" hidden>' +
       '<p class="notice notice--bad"><strong>This cannot be undone.</strong> The student, the login, issues, feedback, test attempts and answers, remarks and points are removed for ever. The Student ID is never given to anybody else.</p>' +
       '<label>Type the Student ID <span class="idbox">' + UI.esc(s.studentId) + '</span> to confirm<input class="input" data-d="confirmId" autocomplete="off" autocapitalize="characters" maxlength="20"></label>' +
@@ -65,9 +111,49 @@
     if ((b = btn("resetpin"))) UI.confirmTap(b, "Sure? Tap again", function () {
       run(b, Api.staff.resetStudentPin(s.studentId), function () { return s.studentName + "'s password was cleared. The parent can set a new one with the First time tab."; });
     });
-    if ((b = btn("suspend"))) UI.confirmTap(b, "Sure? Tap again", function () {
-      run(b, Api.staff.setStudentStatus(s.studentId, "suspended"), function () { return s.studentName + " is suspended and logged out."; });
+    var sform = card.querySelector(".suspendform");
+    if (sform) {
+      sform.addEventListener("submit", function (e) { e.preventDefault(); });
+      var untilBox = sform.querySelector(".untilbox");
+      Array.prototype.forEach.call(sform.querySelectorAll('[data-s="blockType"]'), function (r) {
+        r.addEventListener("change", function () {
+          var temp = sform.querySelector('[data-s="blockType"]:checked').value === "temporary";
+          untilBox.hidden = !temp;
+          if (!temp) sform.querySelector('[data-s="blockUntil"]').value = "";
+        });
+      });
+    }
+    if ((b = btn("suspend"))) b.addEventListener("click", function () { sform.hidden = !sform.hidden; if (!sform.hidden) sform.querySelector('[data-s="reason"]').focus(); });
+    if ((b = btn("suspendcancel"))) b.addEventListener("click", function () { sform.hidden = true; sform.reset(); untilBox.hidden = true; });
+    if ((b = btn("suspendgo"))) b.addEventListener("click", function () {
+      var reason = sform.querySelector('[data-s="reason"]').value.replace(/\s+/g, " ").trim();
+      var chosen = sform.querySelector('[data-s="blockType"]:checked');
+      var until = sform.querySelector('[data-s="blockUntil"]').value;
+      if (reason.length < 5) { ctx.say("Write the reason (at least 5 letters). The student will see it.", "bad"); return; }
+      if (!chosen) { ctx.say("Choose Temporary or Permanent.", "bad"); return; }
+      var extra = { blockType: chosen.value, reason: reason };
+      if (chosen.value === "temporary") {
+        if (!until) { ctx.say("Choose the date the student can log in again.", "bad"); return; }
+        if (until <= pktDay(0)) { ctx.say("The date must be after today.", "bad"); return; }
+        if (until > pktDay(365)) { ctx.say("The date cannot be more than 1 year (365 days) from today.", "bad"); return; }
+        extra.blockUntil = until;
+      }
+      run(b, Api.staff.setStudentStatus(s.studentId, "suspended", extra), function () {
+        return s.studentName + " is suspended and logged out." + (extra.blockUntil ? " Can log in again on " + dayText(extra.blockUntil) + "." : "");
+      });
     });
+    var pform = card.querySelector(".phoneform");
+    if (pform) {
+      pform.addEventListener("submit", function (e) { e.preventDefault(); });
+      if ((b = btn("phone"))) b.addEventListener("click", function () { pform.hidden = !pform.hidden; if (!pform.hidden) pform.querySelector('[data-p="parentPhone"]').focus(); });
+      if ((b = btn("phonecancel"))) b.addEventListener("click", function () { pform.hidden = true; pform.reset(); });
+      if ((b = btn("phonesave"))) b.addEventListener("click", function () {
+        var v = pform.querySelector('[data-p="parentPhone"]').value.trim();
+        if (!v) { ctx.say("Parent WhatsApp number is required.", "bad"); return; }
+        if (!phoneOk(v)) { ctx.say("Enter a Pakistan mobile number for WhatsApp, like 03001234567.", "bad"); return; }
+        run(b, Api.staff.setParentPhone(s.studentId, v), function () { return "The parent WhatsApp number of " + s.studentName + " was saved."; });
+      });
+    }
     if ((b = btn("reactivate"))) b.addEventListener("click", function () {
       run(b, Api.staff.setStudentStatus(s.studentId, "active"), function () { return s.studentName + " is active again."; });
     });
