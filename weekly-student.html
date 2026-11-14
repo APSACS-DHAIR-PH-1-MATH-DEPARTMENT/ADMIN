@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Weekly reports of a student — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card noprint">
+        <p class="small"><a id="back-link" href="weekly.html">← Weekly reports</a></p>
+        <h1 id="ws-title">Weekly reports</h1>
+        <p class="muted" id="ws-sub"></p>
+        <div class="actions">
+          <button class="btn btn--small btn--gold" id="ws-print" type="button" disabled>Download PDF</button>
+          <button class="btn btn--small btn--ghost" id="ws-all" type="button" disabled>Open all</button>
+          <a class="btn btn--small btn--ghost" id="ws-parents" href="parents.html">Parents page</a>
+        </div>
+        <p class="hint">“Download PDF” opens your printer window: choose <b>Save as PDF</b> as the destination. All reports are printed fully opened.</p>
+      </div>
+      <div class="print-head" id="ws-printhead"></div>
+      <div id="loading" class="skeleton noprint" aria-label="Loading"></div>
+      <div id="ws-list" class="reports"></div>
+      <p class="muted" id="ws-empty" hidden>No weekly report has been made for this student yet. The first one is made on a Friday at 5:00 PM.</p>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/report-view.js"></script>
+<script src="assets/js/weekly-student.js"></script>
+</body>
+</html>

@@ -28,6 +28,7 @@
     L.push("- tf (true/false): answer = true or false. Leave the options empty.");
     L.push("- fill: answer = the exact short answer (a number or a word). acceptedAnswers = other accepted spellings separated by | (for example 0.5|.5|1/2), or empty.");
     L.push("- order: items = the pieces in ANY order separated by | ; answer = the same pieces in the RIGHT order separated by | (same spelling).");
+    PromptKit.orderLines().forEach(function (x) { L.push(x); });
     L.push("- short / long: answer = a model answer written in a sentence or two (students compare their own answer with it).");
     L.push("- hint: one short helpful nudge that does not give the answer away (optional but recommended, up to 400 characters).");
     L.push("- solution: REQUIRED for every question. A clear step-by-step explanation a student can follow (at least one full sentence).");
@@ -39,6 +40,7 @@
     L.push("Decimals,Adding,easy,tf,\"$0.5$ is greater than $0.25$.\",,,,,true,,,Think of half and a quarter.,Half is bigger than a quarter so the statement is true.,");
     L.push("Decimals,Place value,medium,fill,What is $3.20 + 1.80$?,,,,,5,,5.0|5.00,,Add the hundredths then the tenths and the ones to get 5.,");
     L.push("Decimals,Order,medium,order,Arrange from smallest to largest.,,,,,0.2|0.25|0.5,0.5|0.2|0.25,,Compare the tenths first.,Writing them with two decimals: 0.20 < 0.25 < 0.50.,");
+    L.push("Algebra,Absolute value,challenging,order,Put the steps that solve $\\lvert x-3 \\rvert = 5$ in the right order.,,,,,$\\lvert x-3 \\rvert = 5$|$x-3=5 \\text{ or } x-3=-5$|$x=8 \\text{ or } x=-2$,$x=8 \\text{ or } x=-2$|$\\lvert x-3 \\rvert = 5$|$x-3=5 \\text{ or } x-3=-5$,,Remove the bars first.,Split into two cases: $x-3=5$ or $x-3=-5$. So $x=8$ or $x=-2$.,");
     return L.join("\n");
   }
 

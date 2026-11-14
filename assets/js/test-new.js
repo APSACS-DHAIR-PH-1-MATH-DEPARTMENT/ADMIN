@@ -5,6 +5,8 @@
   var $ = UI.$, h = Kit.h, clear = Kit.clear;
   var opts = null, drafts = [], seq = 0, nodes = {}, onCreated = null, busyCreate = false;
   var MAX_FILE = 700000;
+  var STRAY_BAR = "A piece cannot contain the | sign outside a formula, because | separates the pieces. Put the formula between $ signs and write absolute value as \\lvert x \\rvert.";
+  function strayBar(lines) { return lines.some(function (l) { return l.replace(/\$\$[\s\S]+?\$\$|\$[^$]+?\$/g, "").indexOf("|") !== -1; }); }
   var TYPE_NAME = { mcq: "Multiple choice", tf: "True / false", fill: "Fill in", order: "Put in order", short: "Short answer", long: "Long answer" };
   function isManual(t) { return t === "short" || t === "long"; }
   function marksOf(q) { var n = parseInt(q.marks, 10); return n >= 1 ? n : 1; }
@@ -133,7 +135,7 @@
     var tfBox = h("div"), tf = select([["true", "True"], ["false", "False"]]); tfBox.appendChild(field("Correct answer", tf));
     var fillBox = h("div"), fa = h("input", "input"); fa.maxLength = 200; var fx = h("input", "input"); fx.maxLength = 300; fx.placeholder = "e.g. 5.0|5.00";
     fillBox.appendChild(field("Correct answer", fa)); fillBox.appendChild(field("Other accepted answers (optional, separate with |)", fx));
-    var ordBox = h("div"), oi = h("textarea", "input input--area"); oi.placeholder = "One value per line, in the CORRECT order. Students will see them shuffled."; ordBox.appendChild(field("Items in the correct order", oi));
+    var ordBox = h("div"), oi = h("textarea", "input input--area"); oi.placeholder = "One piece per line, in the CORRECT order. Students will see them shuffled. A piece can be a step of a solution written between $ signs, for example $2x=8$ (for absolute value type \\lvert x \\rvert, not |x|)."; ordBox.appendChild(field("Items in the correct order", oi));
     var wrBox = h("div"), wa = h("textarea", "input input--area"); wa.maxLength = 800; wa.placeholder = "The model answer: final result and the marking points, e.g. Step 1 … (1) Step 2 … (1) Answer … (1)"; wrBox.appendChild(field("Model answer / marking points (only you see this until the answer is marked)", wa));
     f.appendChild(mc); f.appendChild(tfBox); f.appendChild(fillBox); f.appendChild(ordBox); f.appendChild(wrBox);
     var defaultMarks = { short: "3", long: "5" };
@@ -153,7 +155,7 @@
       } else if (rec.type === "tf") rec.answer = tf.value;
       else if (isManual(rec.type)) rec.answer = wa.value.trim();
       else if (rec.type === "fill") { rec.answer = fa.value.trim(); rec.acceptedAnswers = fx.value.trim(); }
-      else { var lines = oi.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean); rec.answer = lines.join("|"); rec.items = shuffle(lines).join("|"); }
+      else { var lines = oi.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean); if (strayBar(lines)) { UI.say(msg, STRAY_BAR, "bad"); return; } rec.answer = lines.join("|"); rec.items = shuffle(lines).join("|"); }
       var b = formBase(), n = d.questions.length, p = { save: false, classLevel: b.classLevel, questions: d.questions.concat([rec]) }; if (b.chapter) p.chapter = b.chapter; if (b.topic) p.topic = b.topic;
       UI.busy(add, true, "Checking…");
       Api.staff.createCustomTest(p).then(function (r) {

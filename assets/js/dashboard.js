@@ -43,6 +43,10 @@
         var n = q.counts.open, a = $("req-note"); a.hidden = n === 0;
         if (n) a.textContent = n + " student request" + (n === 1 ? " is" : "s are") + " waiting for your reply. Open Requests";
       }).catch(function () { /* optional */ });
+      Api.staff.reportAlerts().then(function (q) {
+        var n = q.count, a = $("alert-note"); a.hidden = n === 0;
+        if (n) a.textContent = n + (n === 1 ? " child has" : " children have") + " not read the last 3 weekly reports. Open Parents to send the parents a WhatsApp message";
+      }).catch(function () { /* optional: an older backend has no such route */ });
     }).catch(function (e) { UI.say($("page-msg"), e.message, "bad"); });
   }
 

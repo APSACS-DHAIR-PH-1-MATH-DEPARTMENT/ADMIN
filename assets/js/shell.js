@@ -8,12 +8,15 @@
     { id: "tests",     label: "Tests",    icon: "target", href: "tests.html",     ready: true },
     { id: "requests",  label: "Requests", icon: "pencil", href: "requests.html", ready: true },
     { id: "overview",  label: "Overview", icon: "trend", href: "overview.html",  ready: true },
+    { id: "weekly",    label: "Weekly reports", icon: "clipboard", href: "weekly.html", ready: true },
+    { id: "parents",   label: "Parents", icon: "chat", href: "parents.html", ready: true },
     { id: "remarks",   label: "Remarks & copy check", icon: "note", href: "remarks.html", ready: true },
     { id: "content",   label: "Practice & exercises", icon: "bolt", href: "content.html", ready: true },
     { id: "questions", label: "Question bank (old)", icon: "book", href: "questions.html", ready: true },
     { id: "students",  label: "All students", icon: "cap", href: "students.html", ready: true, adminOnly: true },
     { id: "teachers",  label: "Teachers", icon: "users", href: "teachers.html",  ready: true, adminOnly: true },
     { id: "feedback",  label: "Feedback", icon: "chat", href: "feedback.html",  ready: true, adminOnly: true },
+    { id: "reportstatus", label: "Report status", icon: "bolt", href: "report-status.html", ready: true, adminOnly: true },
     { id: "activity",  label: "Activity", icon: "clipboard", href: "activity.html", ready: true, adminOnly: true }
   ];
   var activeTab = "";
@@ -86,7 +89,7 @@
      needAdmin = true sends teachers back to Home. The server checks every request again anyway. */
   /* Warn (once per browser session) when the deployed backend is older than this website. Without this the only symptom is
      cryptic red errors on every page. The health call is public and costs one request. */
-  var REQUIRED_BUILD = 17;
+  var REQUIRED_BUILD = 24;
   function checkBackend(p) {
     try { if (sessionStorage.getItem("aps-staff:build-ok") === "1") return; } catch (e) { /* ignore */ }
     Api.health().then(function (r) {

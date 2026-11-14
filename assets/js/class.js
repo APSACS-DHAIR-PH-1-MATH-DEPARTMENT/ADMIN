@@ -22,6 +22,7 @@
       '<a class="btn btn--small btn--ghost" href="' + UI.esc(link) + '#add-issue">+ Add issue</a>' +
       '<a class="btn btn--small btn--ghost" href="remarks.html?student=' + encodeURIComponent(s.studentId) + '">Remarks</a>' +
       '<a class="btn btn--small btn--ghost" href="student-report.html?id=' + encodeURIComponent(s.studentId) + '">Report</a>' +
+      (s.status === "active" ? '<a class="btn btn--small btn--ghost" href="weekly-student.html?id=' + encodeURIComponent(s.studentId) + "&c=" + cls + "&s=" + encodeURIComponent(sec) + '">Weekly reports</a>' : "") +
       "</div></article>";
   }
 

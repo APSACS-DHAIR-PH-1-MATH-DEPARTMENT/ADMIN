@@ -255,7 +255,7 @@
     top.appendChild(h("span", "small muted", q.mine ? "added by you" : "added by " + UI.name(q.createdByName || "")));
     c.appendChild(top); c.appendChild(tex("div", "qtext qtext--sm", q.question));
     if (q.options && q.options.length) { var ul = h("ul", "optlist"); q.options.forEach(function (o) { ul.appendChild(tex("li", o.key === q.answer ? "optlist__right" : "", o.key + ") " + o.text)); }); c.appendChild(ul); }
-    if (q.items && q.items.length) c.appendChild(h("p", "small", "Pieces: " + q.items.join(" | ")));
+    if (q.items && q.items.length) { var pp = h("p", "small", "Pieces: "), ps = h("span"); TeX.set(ps, q.items.join("  ,  ")); pp.appendChild(ps); c.appendChild(pp); }
     var ans = h("p", "small"); ans.appendChild(h("b", "", "Answer: ")); var as = h("span"); TeX.set(as, q.type === "order" ? q.answer.split("|").join(" → ") : q.answer); ans.appendChild(as); c.appendChild(ans);
     if (q.hint) { var hp = h("p", "small"); hp.appendChild(h("b", "", "Hint: ")); var hs = h("span"); TeX.set(hs, q.hint); hp.appendChild(hs); c.appendChild(hp); }
     var sp = h("div", "ans__why"); sp.appendChild(h("b", "", "Solution: ")); var ss = h("span", "ans__written"); TeX.set(ss, q.solution); sp.appendChild(ss); c.appendChild(sp);

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Parents — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card noprint">
+        <h1>Parents and weekly reports</h1>
+        <p class="muted">Send each parent the weekly report message on WhatsApp. The button opens WhatsApp with the message ready; you press send there, then come back and press <b>Mark as sent</b>.</p>
+        <div class="formgrid">
+          <div><label for="pa-class">Class and section</label><select class="input" id="pa-class"></select></div>
+          <div><label for="pa-q">Search</label><input class="input" id="pa-q" type="search" placeholder="Name, father or Student ID" autocomplete="off"></div>
+        </div>
+        <div class="chiprow" id="pa-filters" role="group" aria-label="Show">
+          <button class="chip chip--btn is-on" type="button" data-f="all">All</button>
+          <button class="chip chip--btn" type="button" data-f="notsent">Not sent yet</button>
+          <button class="chip chip--btn" type="button" data-f="unread">Not read</button>
+          <button class="chip chip--btn" type="button" data-f="nonumber">No valid number</button>
+        </div>
+        <div id="pa-flash" role="status" hidden></div>
+      </div>
+      <div id="loading" class="skeleton" aria-label="Loading"></div>
+      <section id="alerts" class="card alertcard" hidden>
+        <h2>Not reading the reports</h2>
+        <p class="muted small">These children have not read their last 3 weekly reports. The website stays locked for them until the newest report is read. Please talk to the parent.</p>
+        <div id="al-list" class="list"></div>
+      </section>
+      <div id="pa-list" class="list"></div>
+      <p class="muted" id="pa-empty" hidden>No students to show.</p>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/report-view.js"></script>
+<script src="assets/js/parents.js"></script>
+</body>
+</html>

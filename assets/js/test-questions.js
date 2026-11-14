@@ -8,6 +8,8 @@
   function isManual(t) { return t === "short" || t === "long"; }
   function marksOf(q) { var n = parseInt(q.marks, 10); return n >= 1 ? n : 1; }
 
+  var STRAY_BAR = "A piece cannot contain the | sign outside a formula, because | separates the pieces. Put the formula between $ signs and write absolute value as \\lvert x \\rvert.";
+  function strayBar(lines) { return lines.some(function (l) { return l.replace(/\$\$[\s\S]+?\$\$|\$[^$]+?\$/g, "").indexOf("|") !== -1; }); }
   function flash(text, kind) { UI.say($("q-flash"), text, kind || "ok"); $("q-flash").scrollIntoView(); }
   function field(label, el) { var w = h("div"); w.appendChild(h("label", "", label)); w.appendChild(el); return w; }
   function select(list) { var s = h("select", "input"); list.forEach(function (o) { var x = h("option", "", o[1]); x.value = o[0]; s.appendChild(x); }); return s; }
@@ -89,7 +91,7 @@
       } else if (q.type === "tf") p.answer = get.tf.value;
       else if (isManual(q.type)) p.answer = get.wa.value.trim();
       else if (q.type === "fill") { p.answer = get.fa.value.trim(); p.acceptedAnswers = get.fx.value.trim(); p.slips = get.fs.value.trim(); }
-      else { var lines = get.oi.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean), joined = lines.join("|"); if (joined !== q.answer) { p.answer = joined; p.items = shuffle(lines).join("|"); } }
+      else { var lines = get.oi.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean), joined = lines.join("|"); if (strayBar(lines)) { UI.say(msg, STRAY_BAR, "bad"); return; } if (joined !== q.answer) { p.answer = joined; p.items = shuffle(lines).join("|"); } }
       if (rm) p.remark = rm.checked;
       UI.busy(save, true, "Saving…");
       Api.staff.updateTestQuestion(id, q.questionId, p).then(function (r) {

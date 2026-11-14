@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Weekly reports — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card noprint">
+        <h1>Weekly reports</h1>
+        <p class="muted">The system makes one report per student every Friday at 5:00 PM. Here you see each student’s report of the chosen week, when it was read and what the parent wrote.</p>
+        <div class="formgrid">
+          <div><label for="wk-class">Class and section</label><select class="input" id="wk-class"></select></div>
+          <div><label for="wk-cycle">Week ending</label><select class="input" id="wk-cycle"></select></div>
+        </div>
+        <label for="wk-q">Search</label>
+        <input class="input" id="wk-q" type="search" placeholder="Name or Student ID" autocomplete="off">
+        <div class="chiprow" id="wk-filters" role="group" aria-label="Show">
+          <button class="chip chip--btn is-on" type="button" data-f="all">All</button>
+          <button class="chip chip--btn" type="button" data-f="unread">Not read</button>
+          <button class="chip chip--btn" type="button" data-f="streak">3 or more not read</button>
+          <button class="chip chip--btn" type="button" data-f="noreport">No report</button>
+        </div>
+      </div>
+      <div class="tiles tiles--4" id="wk-tiles" hidden>
+        <div class="tile"><div class="tile__n" id="wk-n-students">—</div><div class="tile__l">Students</div></div>
+        <div class="tile"><div class="tile__n" id="wk-n-read">—</div><div class="tile__l">Read</div></div>
+        <div class="tile"><div class="tile__n" id="wk-n-unread">—</div><div class="tile__l">Not read</div></div>
+        <div class="tile"><div class="tile__n" id="wk-n-none">—</div><div class="tile__l">No report</div></div>
+      </div>
+      <div id="loading" class="skeleton" aria-label="Loading"></div>
+      <div id="wk-list" class="list"></div>
+      <p class="muted" id="wk-empty" hidden>No students to show.</p>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/report-view.js"></script>
+<script src="assets/js/weekly.js"></script>
+</body>
+</html>

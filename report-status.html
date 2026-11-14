@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14532d">
+  <title>Report status — Staff Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="app-side" aria-label="Menu"></aside>
+  <div class="shell__body">
+    <header class="topbar" id="app-header"></header>
+    <main class="wrap wrap--app wrap--wide">
+      <div id="page-msg" role="alert" hidden></div>
+      <div class="card">
+        <h1>Weekly report status</h1>
+        <p class="muted">Reports are made by the system every Friday at 5:00 PM (Pakistan time). From Saturday 00:00 a child whose newest report is unread cannot use the other tabs until she reads it.</p>
+        <div id="st-flash" role="status" hidden></div>
+        <div id="loading" class="skeleton" aria-label="Loading"></div>
+        <div id="st-box" hidden>
+          <div class="tiles tiles--4">
+            <div class="tile"><div class="tile__n" id="st-made">—</div><div class="tile__l">Reports made for the latest Friday</div></div>
+            <div class="tile"><div class="tile__n" id="st-active">—</div><div class="tile__l">Active students</div></div>
+            <div class="tile"><div class="tile__n" id="st-read">—</div><div class="tile__l">Read so far</div></div>
+            <div class="tile"><div class="tile__n" id="st-state">—</div><div class="tile__l">Making reports</div></div>
+          </div>
+          <ul class="rep__ul" id="st-lines"></ul>
+          <div class="actions">
+            <button class="btn btn--small btn--ghost" id="st-pause" type="button">Pause</button>
+            <button class="btn btn--small btn--gold" id="st-build" type="button">Build now</button>
+            <button class="btn btn--small btn--ghost" id="st-refresh" type="button">Refresh</button>
+          </div>
+          <p class="hint">Pause stops new reports from being made (reports that already exist still count for the lock). “Build now” makes the latest Friday’s reports for everybody who does not have one yet; it is safe to press again.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/datetime.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/kit.js"></script>
+<script src="assets/js/report-status.js"></script>
+</body>
+</html>

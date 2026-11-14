@@ -74,5 +74,15 @@
     return s;
   }
 
-  window.PromptKit = { levelNote: levelNote, renderTags: renderTags, picked: picked, tagLines: tagLines, tagSelect: tagSelect, copy: copy };
+  /* Step 9.6: the rules for "order" questions, including FORMULA questions whose pieces are the steps of a worked solution (LaTeX).
+     The | sign separates the pieces, so a bar inside a formula (absolute value) must be written \lvert ... \rvert. The server also repairs a
+     bar that sits inside $...$ and refuses a formula that is cut in two, but the AI should get it right the first time. */
+  function orderLines() {
+    return [
+      "- Solution steps to rearrange (formula questions): to make a child put a worked solution in order, use type order where every piece is ONE step of the working, written in LaTeX between $ signs. Example: items = $2x+3=11$|$2x=8$|$x=4$ in a SHUFFLED order, answer = the same steps in the RIGHT order. Use 3 to 6 pieces (never more than 8), all different, one line of working each.",
+      "- Every piece must open and close its own $ signs. The | sign separates pieces, so NEVER type | inside a formula: write absolute value as \\lvert x-3 \\rvert, for example $\\lvert x-3 \\rvert = 5$ (and a double bar as \\lVert v \\rVert). If a cell contains a comma, put the whole cell between double quotes."
+    ];
+  }
+
+  window.PromptKit = { orderLines: orderLines, levelNote: levelNote, renderTags: renderTags, picked: picked, tagLines: tagLines, tagSelect: tagSelect, copy: copy };
 })();

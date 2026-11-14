@@ -45,7 +45,9 @@
       });
       c.appendChild(ul);
     } else if (q.type === "order") {
-      c.appendChild(h("div", "ans__line", "Items: " + String(q.items).split("|").join(" , "))); c.appendChild(h("div", "ans__line ans__line--right", "Correct order: " + String(q.answer).split("|").join(" → ")));
+      /* the pieces may be formulas (solution steps): drawn by KaTeX, still only as text */
+      var il = h("div", "ans__line", "Items: "), is = h("span"); TeX.set(is, String(q.items).split("|").join("  ,  ")); il.appendChild(is); c.appendChild(il);
+      var cl = h("div", "ans__line ans__line--right", "Correct order: "), cs = h("span"); TeX.set(cs, String(q.answer).split("|").join("  →  ")); cl.appendChild(cs); c.appendChild(cl);
     } else {
       c.appendChild(h("div", "ans__line ans__line--right", "Answer: " + q.answer + (q.acceptedAnswers ? "  (also accepted: " + String(q.acceptedAnswers).split("|").join(", ") + ")" : "")));
     }

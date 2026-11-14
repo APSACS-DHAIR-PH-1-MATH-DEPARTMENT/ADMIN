@@ -4,7 +4,7 @@
    AUTH_003 / AUTH_004 = session over -> login page. AUTH_002 = account not active. */
 (function () {
   var CFG = window.APS_CONFIG;
-  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1, "staff/listRequests": 1, "staff/questionLookup": 1, "staff/flaggedQuestions": 1, "staff/listPractice": 1, "staff/listExercises": 1, "staff/listRemarks": 1, "staff/overviewList": 1, "staff/studentReport": 1 };   // harmless reads only
+  var RETRYABLE = { "health": 1, "staff/me": 1, "staff/summary": 1, "staff/listStudents": 1, "staff/listTeachers": 1, "staff/listIssues": 1, "staff/listFeedback": 1, "staff/issueOptions": 1, "staff/listAssessments": 1, "staff/markingQueue": 1, "staff/assessmentOptions": 1, "staff/assessmentReport": 1, "staff/studentAssessmentReport": 1, "staff/questionBank": 1, "staff/auditLog": 1, "staff/listQuestions": 1, "staff/testQuestions": 1, "staff/listPatterns": 1, "staff/listRequests": 1, "staff/questionLookup": 1, "staff/flaggedQuestions": 1, "staff/listPractice": 1, "staff/listExercises": 1, "staff/listRemarks": 1, "staff/overviewList": 1, "staff/studentReport": 1, "staff/reportsList": 1, "staff/reportOf": 1, "staff/parentsList": 1, "staff/reportAlerts": 1, "staff/reportsStatus": 1 };   // harmless reads only
 
   function notConfigured() {
     return !CFG || !CFG.API_BASE_URL || !CFG.API_KEY || CFG.API_BASE_URL.indexOf("PASTE_") === 0 || CFG.API_KEY.indexOf("PASTE_") === 0;
@@ -137,7 +137,16 @@
       updateRemark: function (remarkId, fields) { var p = { remarkId: remarkId }; Object.keys(fields).forEach(function (k) { p[k] = fields[k]; }); return authed("staff/updateRemark", p); },
       setRemarkActive: function (remarkId, active) { return authed("staff/setRemarkActive", { remarkId: remarkId, active: active === true }); },
       overviewList: function (filters) { return authed("staff/overviewList", filters || {}); },
-      studentReport: function (studentId, from, to) { var p = { studentId: studentId }; if (from) p.from = from; if (to) p.to = to; return authed("staff/studentReport", p); }
+      studentReport: function (studentId, from, to) { var p = { studentId: studentId }; if (from) p.from = from; if (to) p.to = to; return authed("staff/studentReport", p); },
+      /* build 24 (Step 9.5): weekly reports from the staff side */
+      reportsList: function (classLevel, section, cycleId) { var p = {}; if (classLevel) p.classLevel = classLevel; if (section) p.section = section; if (cycleId) p.cycleId = cycleId; return authed("staff/reportsList", p); },
+      reportOf: function (studentId) { return authed("staff/reportOf", { studentId: studentId }); },
+      parentsList: function (classLevel, section) { var p = {}; if (classLevel) p.classLevel = classLevel; if (section) p.section = section; return authed("staff/parentsList", p); },
+      reportAlerts: function () { return authed("staff/reportAlerts"); },
+      markReportSent: function (reportId, kind, sent) { return authed("staff/markReportSent", { reportId: reportId, kind: kind || "report", sent: sent === true }); },
+      reportsStatus: function () { return authed("staff/reportsStatus"); },
+      setReportsPaused: function (paused) { return authed("staff/setReportsPaused", { paused: paused === true }); },
+      buildWeeklyReports: function () { return authed("staff/buildWeeklyReports"); }
     }
   };
 })();

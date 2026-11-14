@@ -39,6 +39,7 @@
     L.push("- tf: answer = true or false. Leave the option columns, items, acceptedAnswers and slips empty.");
     L.push("- fill: answer = the correct value. acceptedAnswers = other accepted forms separated by | (for example 5.0|5.00), or empty. Leave the option columns and items empty.");
     L.push("- order: items = the values in a SHUFFLED order separated by |. answer = the same values in the CORRECT order separated by |.");
+    if (order) PromptKit.orderLines().forEach(function (x) { L.push(x); });
     L.push("- errA to errD (mcq only): for every WRONG option write the mistake tag that explains why a student would pick it. Leave the correct option's tag empty. Make wrong options come from real mistakes, not random numbers.");
     L.push("- slips (fill and order, optional): common wrong answers with their tag, written wrong~TAG and separated by ; for example 4.00~CARRY");
     PromptKit.tagLines(state, PromptKit.picked("bp-tag"), cls).forEach(function (x) { L.push(x); });
